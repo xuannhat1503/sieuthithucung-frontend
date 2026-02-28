@@ -34,7 +34,7 @@
     <script>
         // Khi deploy: Vercel proxy /api/* → Render backend (xem vercel.json)
         // Khi dev local: đổi thành 'http://127.0.0.1:8000/api/danh-sach-sinh-vien'
-        const API_URL = '/api/danh-sach-sinh-vien';
+        const API_URL = 'https://sieuthithucung-backend-production.up.railway.app/api/danh-sach-sinh-vien';
 
         fetch(API_URL)
             .then(response => {
