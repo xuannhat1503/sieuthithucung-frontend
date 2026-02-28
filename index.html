@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Frontend Độc Lập - Danh Sách Sinh Viên</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; padding: 20px; background-color: #f9f9f9; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+        th { background-color: #007bff; color: white; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Danh sách Sinh Viên (Nhom 12 Chieu Thu 6)</h2>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Mã Sinh Viên</th>
+                    <th>Họ Tên</th>
+                    <th>Lớp</th>
+                </tr>
+            </thead>
+            <tbody id="bang-sinh-vien">
+                <tr><td colspan="3">Đang tải dữ liệu từ API Backend...</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        // Khi deploy: Vercel proxy /api/* → Render backend (xem vercel.json)
+        // Khi dev local: đổi thành 'http://127.0.0.1:8000/api/danh-sach-sinh-vien'
+        const API_URL = '/api/danh-sach-sinh-vien';
+
+        fetch(API_URL)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Lỗi mạng hoặc CORS bị chặn');
+                }
+                return response.json();
+            })
+            .then(data => {
+                const tbody = document.getElementById('bang-sinh-vien');
+                tbody.innerHTML = ''; // Xóa chữ "Đang tải..."
+
+                data.forEach(sv => {
+                    tbody.innerHTML += `
+                        <tr>
+                            <td>${sv.ma_sinh_vien}</td>
+                            <td>${sv.ho_ten}</td>
+                            <td>${sv.lop}</td>
+                        </tr>
+                    `;
+                });
+            })
+            .catch(error => {
+                console.error('Chi tiết lỗi:', error);
+                document.getElementById('bang-sinh-vien').innerHTML = `<tr><td colspan="3" style="color:red;">Lỗi tải dữ liệu. Hãy đảm bảo đã cấu hình CORS bên Laravel và server đang chạy.</td></tr>`;
+            });
+    </script>
+
+</body>
+</html>
