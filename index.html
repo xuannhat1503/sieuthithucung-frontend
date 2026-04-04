@@ -1,67 +1,157 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Frontend Độc Lập - Danh Sách Sinh Viên</title>
-    <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; padding: 20px; background-color: #f9f9f9; }
-        .container { max-width: 800px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
-        th { background-color: #007bff; color: white; }
-    </style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>STTC Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=Sora:wght@500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+<div class="bg-shape bg-shape-1"></div>
+<div class="bg-shape bg-shape-2"></div>
 
-    <div class="container">
-        <h2>Danh sách Sinh Viên (Nhom 12 Chieu Thu 6)</h2>
-        
-        <table>
-            <thead>
-                <tr>
-                    <th>Mã Sinh Viên</th>
-                    <th>Họ Tên</th>
-                    <th>Lớp</th>
-                </tr>
-            </thead>
-            <tbody id="bang-sinh-vien">
-                <tr><td colspan="3">Đang tải dữ liệu từ API Backend...</td></tr>
-            </tbody>
-        </table>
+<div id="loginOverlay" class="login-overlay">
+    <div class="login-card">
+        <p class="eyebrow">STTC Admin Security</p>
+        <h2>Dang nhap quan tri</h2>
+        <p class="hint">Chi tai khoan ADMIN moi duoc truy cap.</p>
+
+        <div class="field">
+            <label for="loginEmail">Email</label>
+            <input id="loginEmail" type="email" placeholder="admin@example.com" />
+        </div>
+
+        <div class="field">
+            <label for="loginPassword">Password</label>
+            <input id="loginPassword" type="password" placeholder="Nhap mat khau" />
+        </div>
+
+        <button id="loginBtn" class="btn btn-primary" type="button">Dang nhap</button>
     </div>
+</div>
 
-    <script>
-        // Khi deploy: Vercel proxy /api/* → Render backend (xem vercel.json)
-        // Khi dev local: đổi thành 'http://127.0.0.1:8000/api/danh-sach-sinh-vien'
-        const API_URL = 'https://sieuthithucung-backend-production.up.railway.app/api/danh-sach-sinh-vien';
+<div id="appShell" class="app-shell locked">
+    <aside class="sidebar">
+        <div class="brand">
+            <span class="brand-mark">STTC</span>
+            <h1>Admin Console</h1>
+        </div>
 
-        fetch(API_URL)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Lỗi mạng hoặc CORS bị chặn');
-                }
-                return response.json();
-            })
-            .then(data => {
-                const tbody = document.getElementById('bang-sinh-vien');
-                tbody.innerHTML = ''; // Xóa chữ "Đang tải..."
+        <nav id="moduleNav" class="module-nav"></nav>
 
-                data.forEach(sv => {
-                    tbody.innerHTML += `
-                        <tr>
-                            <td>${sv.ma_sinh_vien}</td>
-                            <td>${sv.ho_ten}</td>
-                            <td>${sv.lop}</td>
-                        </tr>
-                    `;
-                });
-            })
-            .catch(error => {
-                console.error('Chi tiết lỗi:', error);
-                document.getElementById('bang-sinh-vien').innerHTML = `<tr><td colspan="3" style="color:red;">Lỗi tải dữ liệu. Hãy đảm bảo đã cấu hình CORS bên Laravel và server đang chạy.</td></tr>`;
-            });
-    </script>
+        <div class="sidebar-footer">
+            <p>Sieu thi thu cung</p>
+        </div>
+    </aside>
 
+    <main class="main-content">
+        <header class="top-bar">
+            <div>
+                <p class="eyebrow">Quan tri he thong</p>
+                <h2 id="moduleTitle">Dashboard</h2>
+            </div>
+
+            <div class="session-box">
+                <span id="sessionUser">Chua dang nhap</span>
+                <button id="logoutBtn" class="btn btn-danger" type="button">Dang xuat</button>
+            </div>
+        </header>
+
+        <section id="statsPanel" class="panel">
+            <div class="panel-head">
+                <h3>Thong ke nhanh</h3>
+                <div class="stats-filter">
+                    <label for="statsMonth">Theo thang</label>
+                    <input id="statsMonth" type="month" />
+                    <button id="statsAllBtn" class="btn btn-secondary" type="button">Tat ca</button>
+                </div>
+            </div>
+
+            <div class="stats-grid">
+                <article class="stat-card">
+                    <p>Tong nguoi dung</p>
+                    <h4 id="statUsers">-</h4>
+                </article>
+                <article class="stat-card">
+                    <p>Tong don hang</p>
+                    <h4 id="statOrders">-</h4>
+                </article>
+                <article class="stat-card">
+                    <p>Doanh thu da thanh toan</p>
+                    <h4 id="statRevenue">-</h4>
+                </article>
+                <article class="stat-card">
+                    <p>Don cho xu ly</p>
+                    <h4 id="statPending">-</h4>
+                </article>
+            </div>
+
+            <div class="charts-grid">
+                <div class="chart-card">
+                    <h4>Don hang theo trang thai</h4>
+                    <div id="ordersStatusChart" class="bar-chart"></div>
+                </div>
+
+                <div class="chart-card">
+                    <h4>Thanh toan theo trang thai</h4>
+                    <div id="paymentsStatusChart" class="bar-chart"></div>
+                </div>
+
+                <div class="chart-card full">
+                    <h4>Top san pham ban chay</h4>
+                    <div id="topProductsChart" class="bar-chart"></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="panel">
+            <div class="panel-head">
+                <h3 id="tableTitle">Danh sach</h3>
+                <div class="panel-actions">
+                    <input id="searchInput" class="search-input" type="text" placeholder="Tim kiem nhanh tren trang hien tai..." />
+                    <button id="refreshBtn" class="btn btn-secondary" type="button">Tai lai</button>
+                    <button id="newBtn" class="btn btn-primary" type="button">Them moi</button>
+                </div>
+            </div>
+
+            <div class="table-wrap">
+                <table>
+                    <thead id="tableHead"></thead>
+                    <tbody id="tableBody"></tbody>
+                </table>
+            </div>
+
+            <div class="pagination">
+                <button id="prevPageBtn" class="btn btn-secondary" type="button">Trang truoc</button>
+                <span id="pageInfo">Trang 1</span>
+                <button id="nextPageBtn" class="btn btn-secondary" type="button">Trang sau</button>
+            </div>
+        </section>
+
+        <section class="panel">
+            <div class="panel-head">
+                <h3 id="formTitle">Tao ban ghi moi</h3>
+                <p id="editingHint" class="hint"></p>
+            </div>
+
+            <form id="recordForm" class="record-form"></form>
+
+            <div class="form-actions">
+                <button id="submitBtn" class="btn btn-primary" type="button">Luu ban ghi</button>
+                <button id="cancelEditBtn" class="btn btn-ghost" type="button">Huy chinh sua</button>
+            </div>
+        </section>
+    </main>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script>
+    window.BASE_API = "https://sieuthithucung-backend-72cr.onrender.com/api/v1";
+</script>
+<script src="app.js"></script>
 </body>
 </html>
