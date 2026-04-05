@@ -1,0 +1,133 @@
+﻿<!-- header.html - PETSAIGON Layout -->
+<style>
+    .psg-account-auth-links {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+        padding: 12px 12px 6px;
+    }
+
+    .psg-account-auth-links a {
+        border-radius: 10px;
+        background: #f4f7ff;
+        padding: 10px 12px;
+        text-align: center;
+    }
+
+    .psg-account-auth-links a.psg-admin-entry {
+        background: #fff1e4;
+        color: #c95f00;
+    }
+
+    .psg-account-auth-links a.psg-admin-entry:hover {
+        background: #ffe7d0;
+        color: #a64d00;
+    }
+</style>
+<header class="psg-header">
+    <div class="psg-main-header">
+        <div class="container">
+            <div class="psg-header-inner">
+                <a data-psg-page="index.html" href="./index.html" class="psg-logo">
+                    <img src="//bizweb.dktcdn.net/100/092/840/themes/885495/assets/logo.png?1751359357620" alt="PETSAIGON">
+                </a>
+
+                <form class="psg-search-form" action="#" method="get">
+                    <input type="text" name="keyword" placeholder="Tìm kiếm sản phẩm..." class="psg-search-input">
+                    <button type="submit" class="psg-search-btn" aria-label="Tìm kiếm">
+                        <i class="fa fa-search"></i>
+                    </button>
+                </form>
+
+                <div class="psg-action-header">
+                    <div class="psg-action-item psg-account-menu" data-psg-auth-state="guest">
+                        <button type="button" class="psg-icon-btn" aria-label="Tài khoản">
+                            <i class="fa fa-user"></i>
+                        </button>
+                        <div class="psg-account-dropdown">
+                            <div class="psg-account-auth-links is-guest-only">
+                                <a data-psg-page="pages/login.html" href="./pages/login.html">Đăng nhập</a>
+                                <a href="https://sieuthithucung-frontend-admin.vercel.app/" target="_blank" rel="noopener noreferrer" class="psg-admin-entry">Admin</a>
+                            </div>
+                            <a data-psg-page="pages/register.html" href="./pages/register.html" class="is-guest-only">Đăng ký</a>
+                            <a data-psg-page="pages/account.html" href="./pages/account.html" class="is-auth-only">Tài khoản</a>
+                            <a href="#" class="is-auth-only" data-psg-logout>Đăng xuất</a>
+                        </div>
+                    </div>
+
+                    <div class="psg-action-item">
+                        <a href="#" class="psg-icon-btn" aria-label="Giỏ hàng">
+                            <i class="fa fa-shopping-cart"></i>
+                            <span class="psg-action-badge is-empty" id="cart-count">0</span>
+                        </a>
+                    </div>
+
+                    <div class="psg-action-item">
+                        <a href="#" class="psg-icon-btn" aria-label="Yêu thích">
+                            <i class="fa fa-heart"></i>
+                            <span class="psg-action-badge is-empty" id="wishlist-count">0</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="psg-navigation">
+        <div class="container">
+            <div class="psg-nav-inner">
+                <div class="psg-category-btn">
+                    <i class="fa fa-bars"></i>
+                    <span>DANH MỤC SẢN PHẨM</span>
+                </div>
+
+                <nav class="psg-main-nav">
+                    <ul class="psg-nav-items">
+                        <li class="psg-nav-item active">
+                            <a data-psg-page="index.html" href="./index.html">TRANG CHỦ</a>
+                        </li>
+                        <li class="psg-nav-item psg-dropdown">
+                            <a href="#">SHOP CHÓ <i class="fa fa-chevron-down"></i></a>
+                            <ul class="psg-submenu">
+                                <li><a href="#">Thức ăn cho chó</a></li>
+                                <li><a href="#">Thời trang cho chó</a></li>
+                                <li><a href="#">Sức khỏe cho chó</a></li>
+                                <li><a href="#">Vòng cổ & dây dắt</a></li>
+                                <li><a href="#">Đồ chơi cho chó</a></li>
+                            </ul>
+                        </li>
+                        <li class="psg-nav-item psg-dropdown">
+                            <a href="#">SHOP MÈO <i class="fa fa-chevron-down"></i></a>
+                            <ul class="psg-submenu">
+                                <li><a href="#">Thức ăn cho mèo</a></li>
+                                <li><a href="#">Thời trang cho mèo</a></li>
+                                <li><a href="#">Sức khỏe cho mèo</a></li>
+                                <li><a href="#">Vòng cổ & dây dắt</a></li>
+                                <li><a href="#">Đồ chơi cho mèo</a></li>
+                            </ul>
+                        </li>
+                        <li class="psg-nav-item psg-dropdown">
+                            <a href="#">DỊCH VỤ THÚ CƯNG <i class="fa fa-chevron-down"></i></a>
+                            <ul class="psg-submenu">
+                                <li><a href="#">Dịch vụ Grooming</a></li>
+                                <li><a href="#">Khách sạn thú cưng</a></li>
+                                <li><a href="#">Dịch vụ tắm rửa</a></li>
+                            </ul>
+                        </li>
+                        <li class="psg-nav-item psg-dropdown">
+                            <a href="#">BLOG CHIA SẺ <i class="fa fa-chevron-down"></i></a>
+                            <ul class="psg-submenu">
+                                <li><a href="#">Blog chó</a></li>
+                                <li><a href="#">Blog mèo</a></li>
+                                <li><a href="#">Tips chăm sóc</a></li>
+                            </ul>
+                        </li>
+                        <li class="psg-nav-item">
+                            <a href="#">LIÊN HỆ</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>

@@ -3,51 +3,123 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Frontend Độc Lập - Danh Sách Sinh Viên</title>
+    <title>Sieu Thi Thu Cung Frontend</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="./assets/css/petsaigon-layout.css">
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; padding: 20px; background-color: #f9f9f9; }
-        .container { max-width: 800px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
-        th { background-color: #007bff; color: white; }
+        body {
+            margin: 0;
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f9f9f9;
+            color: #222;
+        }
+
+        .page-shell {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .page-main {
+            flex: 1;
+            padding: 32px 16px;
+        }
+
+        .student-card {
+            max-width: 960px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+        }
+
+        .student-card h2 {
+            margin-top: 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #4a6bd8;
+            color: white;
+        }
     </style>
 </head>
 <body>
+    <div class="page-shell">
+        <div id="site-header"></div>
 
-    <div class="container">
-        <h2>Danh sách Sinh Viên (Nhom 12 Chieu Thu 6)</h2>
-        
-        <table>
-            <thead>
-                <tr>
-                    <th>Mã Sinh Viên</th>
-                    <th>Họ Tên</th>
-                    <th>Lớp</th>
-                </tr>
-            </thead>
-            <tbody id="bang-sinh-vien">
-                <tr><td colspan="3">Đang tải dữ liệu từ API Backend...</td></tr>
-            </tbody>
-        </table>
+        <main class="page-main">
+            <div class="student-card">
+                <h2>Danh sach sinh vien (Nhom 12 Chieu Thu 6)</h2>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Ma Sinh Vien</th>
+                            <th>Ho Ten</th>
+                            <th>Lop</th>
+                        </tr>
+                    </thead>
+                    <tbody id="bang-sinh-vien">
+                        <tr><td colspan="3">Dang tai du lieu tu API Backend...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+
+        <div id="site-footer"></div>
     </div>
 
     <script>
-        // Khi deploy: Vercel proxy /api/* → Render backend (xem vercel.json)
-        // Khi dev local: đổi thành 'http://127.0.0.1:8000/api/danh-sach-sinh-vien'
-        const API_URL = 'https://sieuthithucung-backend-production.up.railway.app/api/danh-sach-sinh-vien';
+        async function loadPartial(targetId, filePath) {
+            const target = document.getElementById(targetId);
+            if (!target) return;
+
+            try {
+                const response = await fetch(filePath);
+                if (!response.ok) {
+                    throw new Error(`Khong the tai ${filePath}`);
+                }
+
+                target.innerHTML = await response.text();
+            } catch (error) {
+                console.error(error);
+                target.innerHTML = `<div style="padding:16px;color:red;">Loi tai ${filePath}</div>`;
+            }
+        }
+
+        Promise.all([
+            loadPartial("site-header", "./partials/header.html"),
+            loadPartial("site-footer", "./partials/footer.html")
+        ]);
+
+        const API_URL = "https://sieuthithucung-backend-production.up.railway.app/api/danh-sach-sinh-vien";
 
         fetch(API_URL)
-            .then(response => {
+            .then((response) => {
                 if (!response.ok) {
-                    throw new Error('Lỗi mạng hoặc CORS bị chặn');
+                    throw new Error("Loi mang hoac CORS bi chan");
                 }
                 return response.json();
             })
-            .then(data => {
-                const tbody = document.getElementById('bang-sinh-vien');
-                tbody.innerHTML = ''; // Xóa chữ "Đang tải..."
+            .then((data) => {
+                const tbody = document.getElementById("bang-sinh-vien");
+                tbody.innerHTML = "";
 
-                data.forEach(sv => {
+                data.forEach((sv) => {
                     tbody.innerHTML += `
                         <tr>
                             <td>${sv.ma_sinh_vien}</td>
@@ -57,11 +129,11 @@
                     `;
                 });
             })
-            .catch(error => {
-                console.error('Chi tiết lỗi:', error);
-                document.getElementById('bang-sinh-vien').innerHTML = `<tr><td colspan="3" style="color:red;">Lỗi tải dữ liệu. Hãy đảm bảo đã cấu hình CORS bên Laravel và server đang chạy.</td></tr>`;
+            .catch((error) => {
+                console.error("Chi tiet loi:", error);
+                document.getElementById("bang-sinh-vien").innerHTML =
+                    '<tr><td colspan="3" style="color:red;">Loi tai du lieu. Hay kiem tra CORS Laravel va backend co dang chay hay khong.</td></tr>';
             });
     </script>
-
 </body>
 </html>

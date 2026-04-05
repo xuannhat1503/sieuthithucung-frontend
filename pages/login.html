@@ -1,0 +1,101 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng nhập</title>
+    <link rel="stylesheet" href="../assets/css/petsaigon-layout.css">
+    <style>
+        .login-action-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            flex-wrap: wrap;
+            width: 100%;
+        }
+
+        .login-submit--admin {
+            background: linear-gradient(135deg, #f78000 0%, #ff9b2f 100%);
+            box-shadow: 0 16px 34px rgba(247, 128, 0, 0.24);
+        }
+
+        @media (max-width: 900px) {
+            .login-action-row {
+                flex-direction: column;
+            }
+
+            .login-action-row .login-submit,
+            .login-action-row .login-submit--admin {
+                width: 100%;
+                min-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body class="login-body" data-psg-header-target="site-header" data-psg-header-path="../partials/header.html" data-psg-footer-target="site-footer" data-psg-footer-path="../partials/footer.html">
+    <div class="login-page">
+        <div id="site-header"></div>
+
+        <main class="login-main">
+            <div class="login-shell">
+                <section class="login-hero">
+                    <span class="login-eyebrow">Tài khoản PETSAIGON</span>
+                    <h1>Đăng nhập<br>Vào tài khoản của bạn</h1>
+                </section>
+
+                <section class="login-grid">
+                    <div class="login-card">
+                        <h2>Đăng nhập</h2>
+                        <p>Nhập email và mật khẩu để truy cập nhanh tài khoản của bạn.</p>
+
+                        <form id="login-form" class="login-form" action="#" method="post" data-psg-api-auth="true">
+                            <div class="login-field">
+                                <label for="email">Email</label>
+                                <input id="email" type="email" name="email" placeholder="Email*" required>
+                            </div>
+
+                            <div class="login-field">
+                                <label for="password">Mật khẩu</label>
+                                <input id="password" type="password" name="password" placeholder="Mật khẩu*" required>
+                            </div>
+
+                            <div class="login-meta">
+                                <div class="login-action-row">
+                                    <button class="login-submit" type="submit">ĐĂNG NHẬP</button>
+                                    <a class="login-submit login-submit--admin" href="https://sieuthithucung-frontend-admin.vercel.app/" target="_blank" rel="noopener noreferrer">ĐĂNG NHẬP ADMIN</a>
+                                </div>
+                                <a class="forgot-link" href="./forgot-password.html">QUÊN MẬT KHẨU?</a>
+                            </div>
+                        </form>
+
+                    </div>
+
+                    <div class="register-card">
+                        <h2>Bạn chưa có tài khoản?</h2>
+                        <p>
+                            Thêm sản phẩm vào danh sách yêu thích, nhận gợi ý cá nhân hóa,
+                            thanh toán nhanh hơn và theo dõi đơn hàng dễ dàng hơn bằng cách đăng ký ngay hôm nay.
+                        </p>
+                        <ul class="register-points">
+                            <li><i class="fa-solid fa-check"></i><span>Lưu sản phẩm yêu thích để xem lại bất cứ lúc nào.</span></li>
+                            <li><i class="fa-solid fa-check"></i><span>Nhận ưu đãi và gợi ý phù hợp với thú cưng của bạn.</span></li>
+                            <li><i class="fa-solid fa-check"></i><span>Theo dõi lịch sử mua hàng và tình trạng đơn hàng nhanh gọn.</span></li>
+                        </ul>
+                        <div>
+                            <a class="register-link-btn" href="./register.html">TẠO TÀI KHOẢN</a>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+
+        <div id="site-footer"></div>
+    </div>
+
+    <script>
+        window.PSG_API_BASE = "http://127.0.0.1:8000/api";
+    </script>
+    <script src="../assets/js/site.js"></script>
+</body>
+</html>

@@ -1,0 +1,76 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng ký</title>
+    <link rel="stylesheet" href="../assets/css/petsaigon-layout.css">
+</head>
+<body class="login-body" data-psg-header-target="site-header" data-psg-header-path="../partials/header.html" data-psg-footer-target="site-footer" data-psg-footer-path="../partials/footer.html">
+    <div class="login-page">
+        <div id="site-header"></div>
+
+        <main class="login-main">
+            <div class="login-shell login-shell--narrow">
+                <section class="login-hero login-hero--compact">
+                    <span class="login-eyebrow">Tài khoản PETSAIGON</span>
+                    <h1>Đăng ký<br>Tài khoản của bạn</h1>
+                    <p>
+                        Hãy tạo tài khoản để bắt đầu trải nghiệm mua sắm tiện lợi cùng chúng tôi.
+                        Mọi thông tin của bạn sẽ được bảo mật tuyệt đối.
+                    </p>
+                </section>
+
+                <section class="register-single-card">
+                    <div class="login-card register-form-card">
+                        <form id="register-form" class="login-form register-form" action="#" method="post" data-psg-api-auth="true">
+                            <div class="login-field">
+                                <label for="register-name">Họ và tên</label>
+                                <input id="register-name" type="text" name="name" placeholder="Họ và tên" required>
+                            </div>
+
+                            <div class="login-field">
+                                <label for="register-email">Email</label>
+                                <input id="register-email" type="email" name="email" placeholder="Email*" required>
+                            </div>
+
+                            <div class="login-field">
+                                <label for="register-password">Mật khẩu</label>
+                                <input id="register-password" type="password" name="password" placeholder="Mật khẩu*" required>
+                            </div>
+
+                            <div class="login-field">
+                                <label for="register-confirm">Xác nhận mật khẩu</label>
+                                <input id="register-confirm" type="password" name="confirmPassword" placeholder="Xác nhận mật khẩu*" required>
+                            </div>
+
+                            <label class="auth-checkbox">
+                                <input type="checkbox" name="checkbox2" required>
+                                <span>Bằng cách nhấn “Tạo tài khoản”, tôi đồng ý với chính sách bảo mật.</span>
+                            </label>
+
+                            <div class="register-actions">
+                                <button class="register-link-btn" type="submit">TẠO TÀI KHOẢN</button>
+                            </div>
+                        </form>
+
+                        <div class="register-legal">
+                            <p><a href="./forgot-password.html">ĐIỀU KHOẢN SỬ DỤNG &nbsp; | &nbsp; CHÍNH SÁCH BẢO MẬT</a></p>
+                            <div class="go-login-link">
+                                <a href="./login.html">ĐÃ CÓ TÀI KHOẢN? ĐĂNG NHẬP NGAY</a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+
+        <div id="site-footer"></div>
+    </div>
+
+    <script>
+        window.PSG_API_BASE = "http://127.0.0.1:8000/api";
+    </script>
+    <script src="../assets/js/site.js"></script>
+</body>
+</html>
