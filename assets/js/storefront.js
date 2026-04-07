@@ -80,7 +80,7 @@
 
         for (const base of candidates) {
             try {
-                const url = new URL(`${base}${normalizedPath}`, window.location.origin);
+                const url = new URL(`${base}${normalizedPath}`);
 
                 Object.entries(params).forEach(([key, value]) => {
                     if (value !== null && value !== undefined && value !== "") {
