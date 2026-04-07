@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PETSAIGON | MoMo Demo</title>
+    <meta name="description" content="Trang mô phỏng thanh toán MoMo cho PETSAIGON.">
+    <link rel="stylesheet" href="../assets/css/petsaigon-layout.css">
+</head>
+<body data-psg-page="momo" data-psg-header-target="site-header" data-psg-header-path="../partials/header.html" data-psg-footer-target="site-footer" data-psg-footer-path="../partials/footer.html">
+    <div id="site-header"></div>
+
+    <main data-momo-page>
+        <section class="psg-page-hero psg-compact-hero psg-momo-hero">
+            <div class="psg-shell">
+                <p class="psg-breadcrumb">Trang chủ / Checkout / MoMo Demo</p>
+                <h1>Thanh toán MoMo giả lập</h1>
+                <p>Trang này mô phỏng bước quét mã và xác nhận thanh toán cho luồng demo.</p>
+            </div>
+        </section>
+
+        <section class="psg-section psg-shell psg-checkout-layout">
+            <div class="psg-cart-card psg-checkout-card psg-momo-card">
+                <p class="psg-eyebrow">MoMo Demo</p>
+                <h2>Quét mã để thanh toán</h2>
+                <div data-momo-status></div>
+                <div class="psg-momo-qr-wrap">
+                    <div class="psg-momo-qr">
+                        <div class="psg-momo-logo">MoMo</div>
+                        <div class="psg-momo-code" data-momo-transaction>---</div>
+                        <p>Demo QR thanh toán cho PETSAIGON</p>
+                    </div>
+                </div>
+                <div class="psg-momo-actions">
+                    <button class="psg-btn psg-btn-primary" type="button" data-momo-complete>Thanh toán thành công</button>
+                    <button class="psg-btn psg-btn-secondary" type="button" data-momo-fail>Thanh toán thất bại</button>
+                </div>
+                <div class="psg-cart-help">
+                    Luồng demo: backend tạo giao dịch `pending`, sau đó bạn có thể thử hoàn tất hoặc đánh dấu thất bại để kiểm tra trạng thái đơn.
+                </div>
+            </div>
+
+            <aside class="psg-cart-sidebar">
+                <div class="psg-cart-card psg-checkout-side-card">
+                    <p class="psg-eyebrow">Giao dịch</p>
+                    <h2>Thông tin MoMo</h2>
+                    <div data-momo-summary></div>
+                </div>
+            </aside>
+        </section>
+    </main>
+
+    <div id="site-footer"></div>
+
+    <script src="../assets/js/site.js"></script>
+    <script src="../assets/js/momo-sim-page.js"></script>
+</body>
+</html>

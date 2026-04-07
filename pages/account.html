@@ -1,0 +1,232 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tài khoản</title>
+    <link rel="stylesheet" href="../assets/css/petsaigon-layout.css">
+</head>
+<body class="login-body" data-psg-header-target="site-header" data-psg-header-path="../partials/header.html" data-psg-footer-target="site-footer" data-psg-footer-path="../partials/footer.html">
+    <div class="login-page">
+        <div id="site-header"></div>
+
+        <main class="account-main">
+            <div class="account-shell">
+                <div class="account-grid">
+                    <aside class="account-sidebar">
+                        <button class="account-tab-link is-active" type="button" data-account-tab="dashboard">
+                            <span>Bảng điều khiển</span>
+                            <i class="fas fa-home"></i>
+                        </button>
+                        <button class="account-tab-link" type="button" data-account-tab="orders">
+                            <span>Đơn hàng</span>
+                            <i class="fas fa-file-alt"></i>
+                        </button>
+                        <button class="account-tab-link" type="button" data-account-tab="address">
+                            <span>Địa chỉ</span>
+                            <i class="fas fa-map-marker-alt"></i>
+                        </button>
+                        <button class="account-tab-link" type="button" data-account-tab="account">
+                            <span>Chi tiết tài khoản</span>
+                            <i class="fas fa-user"></i>
+                        </button>
+                        <button class="account-tab-link" type="button" data-account-tab="password">
+                            <span>Đổi mật khẩu</span>
+                            <i class="fas fa-user-shield"></i>
+                        </button>
+                    </aside>
+
+                    <section class="account-content" id="account-page">
+                        <div class="account-panel is-active" data-account-panel="dashboard">
+                            <div class="account-card account-dashboard-hero">
+                                <div class="account-dashboard-main">
+                                    <span class="account-dashboard-eyebrow">Tài khoản của bạn</span>
+                                    <h2 class="account-dashboard-title">Xin chào, <span id="account-dashboard-name">đang tải...</span></h2>
+                                    <p class="account-dashboard-subtitle">Theo dõi đơn hàng, quản lý địa chỉ giao hàng và cập nhật thông tin cá nhân tại một nơi gọn gàng.</p>
+                                </div>
+                                <div class="account-dashboard-side">
+                                    <div class="account-dashboard-chip">
+                                        <span>Email đang dùng</span>
+                                        <strong id="account-dashboard-email">đang tải...</strong>
+                                    </div>
+                                    <a class="account-logout-link account-dashboard-logout" href="./login.html">Đăng xuất</a>
+                                </div>
+                            </div>
+
+                            <div class="account-dashboard-overview">
+                                <div class="account-card account-dashboard-stat">
+                                    <span class="account-dashboard-stat-label">Đơn hàng</span>
+                                    <strong class="account-dashboard-stat-value" id="account-dashboard-orders-count">0</strong>
+                                    <p class="account-dashboard-stat-copy" id="account-dashboard-orders-copy">Chưa có đơn hàng nào.</p>
+                                </div>
+
+                                <div class="account-card account-dashboard-stat">
+                                    <span class="account-dashboard-stat-label">Địa chỉ</span>
+                                    <strong class="account-dashboard-stat-value" id="account-dashboard-addresses-count">0</strong>
+                                    <p class="account-dashboard-stat-copy" id="account-dashboard-addresses-copy">Chưa có địa chỉ giao hàng.</p>
+                                </div>
+
+                                <div class="account-card account-dashboard-stat">
+                                    <span class="account-dashboard-stat-label">Trạng thái tài khoản</span>
+                                    <strong class="account-dashboard-stat-value" id="account-dashboard-status">Đang tải...</strong>
+                                    <p class="account-dashboard-stat-copy" id="account-dashboard-status-copy">Cập nhật thông tin và theo dõi đơn hàng tại đây.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="account-panel" data-account-panel="orders">
+                            <div class="account-table-wrap">
+                                <table class="account-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Đơn hàng</th>
+                                            <th>Ngày đặt</th>
+                                            <th>Trạng thái</th>
+                                            <th>Tổng tiền</th>
+                                            <th>Hành động</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="account-orders-body">
+                                        <tr><td colspan="5" class="account-loading">Đang tải đơn hàng...</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="account-order-modal" id="account-order-modal" hidden>
+                                <div class="account-address-backdrop" data-close-order-modal="true"></div>
+                                <div class="account-order-panel" role="dialog" aria-modal="true" aria-labelledby="account-order-modal-title">
+                                    <div class="account-address-panel-header">
+                                        <h3 id="account-order-modal-title">Chi tiết đơn hàng</h3>
+                                        <button class="account-address-close" id="close-order-modal" type="button" aria-label="Đóng">&times;</button>
+                                    </div>
+                                    <div class="account-order-detail" id="account-order-detail-content">
+                                        <div class="account-loading">Đang tải chi tiết đơn hàng...</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="account-panel" data-account-panel="address">
+                            <div class="account-note">Các địa chỉ sau sẽ được sử dụng mặc định trên trang thanh toán.</div>
+                            <div class="account-table-wrap">
+                                <table class="account-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Tên người nhận</th>
+                                            <th>Địa chỉ</th>
+                                            <th>Khu vực</th>
+                                            <th>Số điện thoại</th>
+                                            <th>Trạng thái</th>
+                                            <th>Hành động</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="account-addresses-body">
+                                        <tr><td colspan="6" class="account-loading">Đang tải địa chỉ...</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <button class="account-btn account-btn-primary" id="toggle-address-form" type="button">Thêm địa chỉ mới</button>
+
+                            <div class="account-address-modal" id="account-address-form-wrap" hidden>
+                                <div class="account-address-backdrop" data-close-address-modal="true"></div>
+                                <div class="account-address-panel" role="dialog" aria-modal="true" aria-labelledby="account-address-modal-title">
+                                    <div class="account-address-panel-header">
+                                        <h3 id="account-address-modal-title">Thêm địa chỉ mới</h3>
+                                        <button class="account-address-close" id="close-address-form" type="button" aria-label="Dong">&times;</button>
+                                    </div>
+                                    <form id="account-address-form" class="account-address-form">
+                                        <div class="account-field">
+                                            <label for="address-full-name">Tên người dùng</label>
+                                            <input id="address-full-name" name="full_name" type="text" required>
+                                        </div>
+                                        <div class="account-field">
+                                            <label for="address-phone">Số điện thoại</label>
+                                            <input id="address-phone" name="phone" type="text" inputmode="numeric" maxlength="10" pattern="0[0-9]{9}" placeholder="Nhập số điện thoại 10 chữ số" required>
+                                        </div>
+                                        <div class="account-field">
+                                            <label for="address-province">Tỉnh / Thành phố</label>
+                                            <select id="address-province" name="province_code" required></select>
+                                        </div>
+                                        <div class="account-field">
+                                            <label for="address-district">Quận / Huyện</label>
+                                            <select id="address-district" name="district_code" required disabled></select>
+                                        </div>
+                                        <div class="account-field">
+                                            <label for="address-ward">Phường / Xã</label>
+                                            <select id="address-ward" name="ward_code" required disabled></select>
+                                        </div>
+                                        <div class="account-field">
+                                            <label for="address-line">Số nhà, tên đường</label>
+                                            <input id="address-line" name="address_line" type="text" placeholder="Ví dụ: 180 Cao Lỗ" required>
+                                        </div>
+                                        <label class="auth-checkbox account-default-checkbox">
+                                            <input type="checkbox" name="default" value="1">
+                                            <span>Đặt làm địa chỉ mặc định</span>
+                                        </label>
+                                        <button class="account-btn-save account-btn-primary" type="submit">Lưu địa chỉ</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="account-panel" data-account-panel="account">
+                            <div class="account-card">
+                                <div class="account-profile-header">
+                                    <input id="account-avatar-file" name="avatar" type="file" accept="image/png,image/jpeg,image/jpg,image/gif,image/webp" hidden>
+                                    <img class="account-profile-avatar" id="account-avatar" src="../assets/images/uploads/users/default.png" alt="Avatar mac dinh" onerror="this.src='../assets/images/uploads/users/default.png';">
+                                </div>
+                                <div class="account-form-grid">
+                                    <div class="account-field">
+                                        <label for="account-name">Họ và tên</label>
+                                        <input id="account-name" type="text" value="">
+                                    </div>
+                                    <div class="account-field">
+                                        <label for="account-phone">Số điện thoại</label>
+                                        <input id="account-phone" type="text" inputmode="numeric" maxlength="10" pattern="0[0-9]{9}" value="">
+                                    </div>
+                                    <div class="account-field">
+                                        <label for="account-email">Email (Không được thay đổi email)</label>
+                                        <input id="account-email" type="email" value="" readonly>
+                                    </div>
+                                    <div class="account-field">
+                                        <label for="account-address">Địa chỉ</label>
+                                        <input id="account-address" type="text" value="">
+                                    </div>
+                                </div>
+                                <button class="account-btn-save" id="account-profile-submit" type="button">Cập nhật</button>
+                            </div>
+                        </div>
+
+                        <div class="account-panel" data-account-panel="password">
+                            <div class="account-card">
+                                <form id="account-change-password-form">
+                                    <div class="account-password-grid">
+                                        <div class="account-field">
+                                            <label for="current-password">Mật khẩu hiện tại</label>
+                                            <input id="current-password" name="current_password" type="password" required>
+                                        </div>
+                                        <div class="account-field">
+                                            <label for="new-password">Mật khẩu mới</label>
+                                            <input id="new-password" name="new_password" type="password" required>
+                                        </div>
+                                        <div class="account-field">
+                                            <label for="confirm-new-password">Nhập lại mật khẩu mới</label>
+                                            <input id="confirm-new-password" name="confirm_new_password" type="password" autocomplete="new-password" required>
+                                        </div>
+                                    </div>
+                                    <button class="account-btn-save account-btn-primary" type="submit">Đổi mật khẩu</button>
+                                </form>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </main>
+
+        <div id="site-footer"></div>
+    </div>
+
+    <script src="../assets/js/site.js"></script>
+</body>
+</html>

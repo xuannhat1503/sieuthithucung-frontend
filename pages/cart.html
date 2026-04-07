@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PETSAIGON | Giỏ hàng</title>
+    <meta name="description" content="Giỏ hàng PETSAIGON hiển thị các sản phẩm đã thêm, cho phép sửa số lượng, áp mã giảm giá và chuyển đến checkout.">
+    <link rel="stylesheet" href="../assets/css/petsaigon-layout.css">
+</head>
+<body data-psg-page="cart" data-psg-header-target="site-header" data-psg-header-path="../partials/header.html" data-psg-footer-target="site-footer" data-psg-footer-path="../partials/footer.html">
+    <div id="site-header"></div>
+
+    <main data-cart-page>
+        <section class="psg-page-hero psg-compact-hero">
+            <div class="psg-shell">
+                <p class="psg-breadcrumb">Trang chủ / Giỏ hàng</p>
+                <h1>Giỏ hàng của bạn</h1>
+                <p>Kiểm tra lại sản phẩm đã chọn, áp dụng mã giảm giá và tiếp tục sang bước thanh toán.</p>
+            </div>
+        </section>
+
+        <section class="psg-section psg-shell psg-cart-layout">
+            <div class="psg-cart-card">
+                <div class="psg-cart-head">
+                    <div>
+                        <p class="psg-eyebrow">Cart summary</p>
+                        <h2>Sản phẩm đã chọn</h2>
+                    </div>
+                    <div class="psg-cart-head-actions">
+                        <a class="psg-btn psg-btn-secondary" href="./products.html">Tiếp tục mua sắm</a>
+                        <button class="psg-btn psg-btn-secondary" type="button" data-clear-cart>Xóa toàn bộ</button>
+                    </div>
+                </div>
+
+                <div data-cart-content></div>
+            </div>
+
+            <aside class="psg-cart-sidebar">
+                <div class="psg-cart-card">
+                    <p class="psg-eyebrow">Voucher</p>
+                    <h2>Mã giảm giá</h2>
+                    <form class="psg-cart-coupon-form" data-coupon-form>
+                        <input class="psg-field-input" name="coupon_code" placeholder="Nhap ma: PET10, SAVE30K, FREESHIP">
+                        <button class="psg-btn psg-btn-primary" type="submit">Áp dụng</button>
+                    </form>
+                    <p class="psg-cart-help">Gợi ý: `PET10`, `SAVE30K`, `FREESHIP`</p>
+                    <div data-coupon-message></div>
+                </div>
+
+                <div class="psg-cart-card psg-cart-summary-card">
+                    <p class="psg-eyebrow">Thanh toán</p>
+                    <h2>Tổng đơn hàng</h2>
+                    <div data-cart-summary></div>
+                    <div data-cart-login-note></div>
+                    <div class="psg-cart-summary-action">
+                        <a class="psg-btn psg-btn-primary psg-full-width" href="./checkout.html">Tiến hành thanh toán</a>
+                    </div>
+                </div>
+            </aside>
+        </section>
+    </main>
+
+    <div id="site-footer"></div>
+
+    <script src="../assets/js/site.js"></script>
+    <script src="../assets/js/cart-page.js"></script>
+</body>
+</html>

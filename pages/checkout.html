@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PETSAIGON | Checkout</title>
+    <meta name="description" content="Chọn địa chỉ giao hàng đã lưu, tính phí vận chuyển và xác nhận đơn hàng tại PETSAIGON.">
+    <link rel="stylesheet" href="../assets/css/petsaigon-layout.css">
+</head>
+<body data-psg-page="checkout" data-psg-header-target="site-header" data-psg-header-path="../partials/header.html" data-psg-footer-target="site-footer" data-psg-footer-path="../partials/footer.html">
+    <div id="site-header"></div>
+
+    <main data-checkout-page>
+        <section class="psg-page-hero psg-compact-hero">
+            <div class="psg-shell">
+                <p class="psg-breadcrumb">Trang chủ / Giỏ hàng / Checkout</p>
+                <h1>Thanh toán đơn hàng</h1>
+                <p>Chọn địa chỉ đã lưu trong tài khoản, kiểm tra phí vận chuyển và xác nhận phương thức thanh toán.</p>
+            </div>
+        </section>
+
+        <section class="psg-section psg-shell">
+            <div class="psg-cart-card psg-checkout-card">
+                <div data-checkout-auth></div>
+
+                <form data-checkout-form>
+                    <div class="psg-checkout-block">
+                        <p class="psg-eyebrow">Địa chỉ giao hàng</p>
+
+                        <div class="psg-checkout-address-toolbar">
+                            <div class="psg-checkout-address-picker">
+                                <label class="psg-form-label" for="checkout-shipping-address">Chọn địa chỉ khác</label>
+                                <select id="checkout-shipping-address" class="psg-field-input" name="shipping_address_id" data-checkout-address-select required></select>
+                            </div>
+
+                            <a class="psg-btn psg-checkout-add-address" href="./account.html?tab=address">Thêm địa chỉ mới</a>
+                        </div>
+
+                        <div data-checkout-address-empty hidden></div>
+
+                        <div class="psg-form-grid psg-checkout-contact-grid">
+                            <div>
+                                <label class="psg-form-label" for="checkout-recipient-name">Họ và tên</label>
+                                <input id="checkout-recipient-name" class="psg-field-input" data-checkout-recipient-name readonly>
+                            </div>
+                            <div>
+                                <label class="psg-form-label" for="checkout-recipient-phone">Số điện thoại</label>
+                                <input id="checkout-recipient-phone" class="psg-field-input" data-checkout-recipient-phone readonly>
+                            </div>
+                            <div>
+                                <label class="psg-form-label" for="checkout-recipient-email">Email</label>
+                                <input id="checkout-recipient-email" class="psg-field-input" data-checkout-recipient-email readonly>
+                            </div>
+                            <div class="psg-checkout-address-field">
+                                <label class="psg-form-label" for="checkout-recipient-address">Địa chỉ nhận hàng</label>
+                                <textarea id="checkout-recipient-address" class="psg-field-input psg-textarea" data-checkout-recipient-address readonly></textarea>
+                            </div>
+                        </div>
+
+                        <div class="psg-checkout-address-meta">
+                            <span class="psg-checkout-address-badge" data-checkout-default-badge hidden>Địa chỉ mặc định</span>
+                            <div class="psg-checkout-shipping-status" data-checkout-shipping-status>Chọn địa chỉ để tính phí vận chuyển.</div>
+                        </div>
+
+                        <div>
+                            <label class="psg-form-label" for="customer-note">Ghi chú đơn hàng</label>
+                            <textarea id="customer-note" class="psg-field-input psg-textarea" name="note" placeholder="Ví dụ: giao giờ hành chính, gọi trước khi giao..."></textarea>
+                        </div>
+                    </div>
+
+                    <div class="psg-checkout-payment-layout">
+                        <div class="psg-checkout-block psg-payment-section">
+                            <p class="psg-eyebrow">Phương thức thanh toán</p>
+
+                            <div class="psg-checkout-methods">
+                                <label class="psg-radio-card psg-checkout-method">
+                                    <input type="radio" name="payment_method" value="cod" checked>
+                                    <span>
+                                        <strong>Thanh toán khi nhận hàng</strong>
+                                        <small>Kiểm tra đơn hàng và thanh toán trực tiếp lúc nhận.</small>
+                                    </span>
+                                </label>
+
+                                <label class="psg-radio-card psg-checkout-method">
+                                    <input type="radio" name="payment_method" value="momo">
+                                    <span>
+                                        <strong>MoMo</strong>
+                                        <small>Thanh toán qua ví MoMo với luồng xác nhận demo hiện có.</small>
+                                    </span>
+                                </label>
+                            </div>
+
+                            <div data-payment-note></div>
+                            <button class="psg-btn psg-checkout-submit" type="submit">Đặt hàng</button>
+                        </div>
+
+                        <aside class="psg-checkout-summary-panel">
+                            <p class="psg-eyebrow">Đơn hàng</p>
+                            <h2>Tổng sản phẩm</h2>
+                            <div data-checkout-items></div>
+                            <div data-checkout-summary></div>
+                        </aside>
+                    </div>
+
+                    <div data-checkout-message></div>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <div id="site-footer"></div>
+
+    <script src="../assets/js/site.js"></script>
+    <script src="../assets/js/checkout-page.js"></script>
+</body>
+</html>

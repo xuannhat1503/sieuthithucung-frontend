@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PETSAIGON | Chi tiết sản phẩm</title>
+    <meta name="description" content="Trang chi tiết sản phẩm PETSAIGON dùng chung hệ layout hiện tại và lấy dữ liệu từ API catalog.">
+    <link rel="stylesheet" href="../assets/css/petsaigon-layout.css">
+</head>
+<body data-psg-page="detail" data-psg-header-target="site-header" data-psg-header-path="../partials/header.html" data-psg-footer-target="site-footer" data-psg-footer-path="../partials/footer.html">
+    <div id="site-header"></div>
+
+    <main>
+        <section class="psg-page-hero psg-compact-hero">
+            <div class="psg-shell">
+                <p class="psg-breadcrumb">Trang chủ / Sản phẩm / Chi tiết sản phẩm</p>
+                <h1>Chi tiết sản phẩm</h1>
+            </div>
+        </section>
+
+        <section class="psg-section psg-shell psg-detail-layout" data-product-detail></section>
+
+        <section class="psg-section psg-shell">
+            <div class="psg-section-heading">
+                <div>
+                    <p class="psg-eyebrow">Sản phẩm liên quan</p>
+                    <h2>Gợi ý thêm sản phẩm cùng danh mục để người dùng thao tác liền mạch hơn</h2>
+                </div>
+            </div>
+            <div class="psg-product-grid psg-compact-grid" data-product-list="related"></div>
+        </section>
+    </main>
+
+    <div id="site-footer"></div>
+
+    <script src="../assets/js/site.js"></script>
+    <script src="../assets/js/storefront.js"></script>
+</body>
+</html>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PETSAIGON</title>
+    <title>PETSAIGON | San pham</title>
     <script>
         (function () {
             const currentUrl = new URL(window.location.href);
@@ -14,13 +14,13 @@
                 return;
             }
 
-            const target = `./pages/home.html${window.location.search}${window.location.hash}`;
+            const target = `./pages/products.html${window.location.search}${window.location.hash}`;
             const targetUrl = new URL(target, currentUrl.href);
             window.location.replace(targetUrl.toString());
         })();
     </script>
 </head>
 <body>
-    <p>Đang chuyển tới <a href="./pages/home.html">trang chủ</a>...</p>
+    <p>Đang chuyển tới <a href="./pages/products.html">danh sách sản phẩm</a>...</p>
 </body>
 </html>

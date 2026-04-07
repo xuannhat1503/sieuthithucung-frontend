@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PETSAIGON | Blog chia se</title>
+    <link rel="stylesheet" href="../assets/css/petsaigon-layout.css">
+    <link rel="stylesheet" href="../assets/css/engagement/customer-engagement.css">
+</head>
+<body data-psg-page="customer-engagement" data-psg-header-target="site-header" data-psg-header-path="../partials/header.html" data-psg-footer-target="site-footer" data-psg-footer-path="../partials/footer.html">
+    <div id="site-header"></div>
+
+    <main class="ec-page">
+        <section class="container ec-page-shell">
+            <div class="ec-page-head">
+                <span id="blog-chip" class="ec-chip">Blog PETSAIGON</span>
+                <h1 id="blog-title">Blog chia se cho nguoi nuoi thu cung</h1>
+                <p id="blog-copy">Tong hop bai viet huu ich ve cham soc, dinh duong va kinh nghiem mua sam cho boss.</p>
+            </div>
+
+            <div id="status" class="ec-alert ec-hidden"></div>
+        </section>
+
+        <section class="container ec-section" id="blog">
+            <div class="ec-section-heading">
+                <div>
+                    <span class="ec-kicker">Blog chia se</span>
+                    <h2 id="blog-section-title">Bai viet huu ich</h2>
+                </div>
+            </div>
+            <div id="blog-grid" class="ec-blog-grid"></div>
+        </section>
+    </main>
+
+    <div id="site-footer"></div>
+
+    <div id="login-modal" class="ec-modal" aria-hidden="true">
+        <div class="ec-modal-backdrop" data-login-close></div>
+        <div class="ec-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="login-modal-title">
+            <button type="button" class="ec-modal-close" data-login-close aria-label="Dong">x</button>
+            <span class="ec-kicker">Dang nhap</span>
+            <h3 id="login-modal-title">Dang nhap de tiep tuc</h3>
+            <p id="login-modal-message">Vui long dang nhap truoc khi xem wishlist.</p>
+
+            <form id="login-form" class="ec-form-stack">
+                <label>Email
+                    <input type="email" name="email" placeholder="Nhap email tai khoan" required>
+                </label>
+                <label>Mat khau
+                    <input type="password" name="password" placeholder="Nhap mat khau" required>
+                </label>
+                <button type="submit" class="ec-btn ec-btn-primary ec-btn-full">Dang nhap</button>
+            </form>
+
+            <div id="login-status" class="ec-alert ec-alert-info ec-modal-status">Nhap tai khoan de bat dau.</div>
+        </div>
+    </div>
+
+    <script src="../assets/js/site.js"></script>
+    <script src="../assets/js/engagement/common.js"></script>
+    <script src="../assets/js/engagement/customer-engagement.js"></script>
+</body>
+</html>
