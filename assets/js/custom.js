@@ -39,7 +39,7 @@ $(document).ready(function () {
             // Ignore storage failures and fall back to in-memory caching.
         }
     }
-
+//sds
     function collectApiBaseCandidates() {
         const candidates = [];
         const seen = new Set();
@@ -77,12 +77,20 @@ $(document).ready(function () {
 
     async function apiFetch(path, options) {
         const normalizedPath = String(path || '').startsWith('/') ? String(path || '') : `/${String(path || '')}`;
-        const candidates = resolvedApiBase ? [resolvedApiBase, ...collectApiBaseCandidates().filter((candidate) => candidate !== resolvedApiBase)] : collectApiBaseCandidates();
+        const isClientAuthPath = normalizedPath.startsWith('/client-auth/');
+        const authApiBase = normalizeApiBase(window.PSG_AUTH_API_BASE || '');
+        const defaultCandidates = resolvedApiBase ? [resolvedApiBase, ...collectApiBaseCandidates().filter((candidate) => candidate !== resolvedApiBase)] : collectApiBaseCandidates();
+        const candidates = isClientAuthPath && authApiBase
+            ? [authApiBase, ...defaultCandidates.filter((candidate) => candidate !== authApiBase)]
+            : defaultCandidates;
         let lastError = null;
 
         for (const base of candidates) {
             try {
-                const response = await fetch(`${base}${normalizedPath}`, options);
+                const requestPath = isClientAuthPath && /\/api\/auth$/i.test(base)
+                    ? `/${normalizedPath.replace(/^\/client-auth\//, '')}`
+                    : normalizedPath;
+                const response = await fetch(`${base}${requestPath}`, options);
 
                 if (response.status === 404) {
                     continue;
@@ -1507,7 +1515,7 @@ $(document).ready(function () {
         $submitButton.prop('disabled', true).text('DANG GUI...');
 
         try {
-            const response = await apiFetch('/auth/register', {
+            const response = await apiFetch('/client-auth/register', {
                 method: 'POST',
                 headers: {
                     Accept: 'application/json',
@@ -1565,7 +1573,7 @@ $(document).ready(function () {
         $submitButton.prop('disabled', true).text('DANG DANG NHAP...');
 
         try {
-            const response = await apiFetch('/auth/login', {
+            const response = await apiFetch('/client-auth/login', {
                 method: 'POST',
                 headers: {
                     Accept: 'application/json',
@@ -1618,7 +1626,7 @@ $(document).ready(function () {
         $submitButton.prop('disabled', true).text('DANG GUI...');
 
         try {
-            const response = await apiFetch('/auth/forgot-password', {
+            const response = await apiFetch('/client-auth/forgot-password', {
                 method: 'POST',
                 headers: {
                     Accept: 'application/json',
@@ -1679,7 +1687,7 @@ $(document).ready(function () {
         $submitButton.prop('disabled', true).text('DANG CAP NHAT...');
 
         try {
-            const response = await apiFetch('/auth/reset-password', {
+            const response = await apiFetch('/client-auth/reset-password', {
                 method: 'POST',
                 headers: {
                     Accept: 'application/json',

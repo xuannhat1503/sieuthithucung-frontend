@@ -4,6 +4,8 @@
     const API_BASE_STORAGE_KEY = "psg-api-base";
     const LOCAL_API_BASE = "http://127.0.0.1:8000/api";
     const DEPLOY_API_BASE = "/api";
+    const LOCAL_AUTH_API_BASE = "http://127.0.0.1:8000/api/auth";
+    const DEPLOY_AUTH_API_BASE = "https://sieuthithucung-backend-production.up.railway.app/api/auth";
     let sharedAssetsPromise = null;
     const assetPromiseCache = new Map();
 
@@ -11,10 +13,12 @@
         const localHosts = new Set(["localhost", "127.0.0.1"]);
         const isLocalHost = localHosts.has(window.location.hostname);
         const preferredApiBase = isLocalHost ? LOCAL_API_BASE : DEPLOY_API_BASE;
+        const preferredAuthApiBase = isLocalHost ? LOCAL_AUTH_API_BASE : DEPLOY_AUTH_API_BASE;
         const apiBaseCandidates = [preferredApiBase];
 
         window.PSG_API_BASE = preferredApiBase;
         window.PSG_API_BASES = apiBaseCandidates;
+        window.PSG_AUTH_API_BASE = preferredAuthApiBase;
 
         try {
             window.sessionStorage.setItem(API_BASE_STORAGE_KEY, preferredApiBase);
