@@ -367,11 +367,13 @@ textarea {
 }
 
 .table-wrap {
-    overflow: auto;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
 table {
     width: 100%;
+    min-width: 860px;
     border-collapse: collapse;
     font-size: 14px;
 }
@@ -493,6 +495,14 @@ td.actions-cell {
 }
 
 @media (max-width: 960px) {
+    .main-content {
+        padding: 16px;
+    }
+
+    .panel {
+        padding: 12px;
+    }
+
     .app-shell {
         grid-template-columns: 1fr;
     }
@@ -500,6 +510,7 @@ td.actions-cell {
     .sidebar {
         border-right: none;
         border-bottom: 1px solid var(--line);
+        padding: 16px;
     }
 
     .top-bar {
@@ -507,18 +518,49 @@ td.actions-cell {
         align-items: stretch;
     }
 
+    .top-bar h2 {
+        font-size: 24px;
+    }
+
     .session-box {
         justify-content: space-between;
+        flex-wrap: wrap;
+    }
+
+    #sessionUser {
+        width: 100%;
+        margin-bottom: 2px;
     }
 
     .search-input {
         min-width: 0;
+        width: 100%;
+    }
+
+    .panel-head {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .panel-actions {
+        width: 100%;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+    }
+
+    .panel-actions .btn {
+        flex: 0 0 auto;
     }
 
     .stats-filter {
         width: 100%;
         justify-content: flex-start;
         flex-wrap: wrap;
+    }
+
+    #statsMonth {
+        width: 100%;
+        max-width: 220px;
     }
 
     .record-form {
@@ -536,6 +578,59 @@ td.actions-cell {
     .bar-row {
         grid-template-columns: 1fr;
         gap: 6px;
+    }
+
+    .form-actions,
+    .pagination {
+        flex-wrap: wrap;
+    }
+}
+
+@media (max-width: 640px) {
+    .bg-shape {
+        display: none;
+    }
+
+    .main-content {
+        padding: 12px;
+        gap: 12px;
+    }
+
+    .sidebar {
+        padding: 12px;
+    }
+
+    .brand h1 {
+        font-size: 20px;
+    }
+
+    .module-nav {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .module-btn {
+        font-size: 13px;
+        padding: 10px 11px;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .form-actions .btn,
+    .pagination .btn {
+        width: 100%;
+    }
+
+    .toast {
+        right: 12px;
+        left: 12px;
+        bottom: 12px;
+    }
+
+    .login-card {
+        width: calc(100vw - 20px);
+        padding: 16px;
     }
 }
 
