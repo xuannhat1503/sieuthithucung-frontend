@@ -1,5 +1,6 @@
 let BASE_API = window.BASE_API || "https://sieuthithucung-backend-72cr.onrender.com/api/v1";
 let AUTH_TOKEN_KEY = window.AUTH_TOKEN_KEY || "sttc_admin_token";
+let AUTH_USER_KEY = window.AUTH_USER_KEY || "sttc_admin_user";
 
 const modules = {
     users: {
@@ -268,8 +269,14 @@ async function loadRuntimeConfig() {
 
 function init() {
     const savedToken = localStorage.getItem(AUTH_TOKEN_KEY);
+    const savedUserRaw = localStorage.getItem(AUTH_USER_KEY);
+    const savedUser = safeParseJson(savedUserRaw);
+
     if (savedToken) {
         state.authToken = savedToken;
+    }
+    if (savedUser && typeof savedUser === "object") {
+        state.currentAdmin = savedUser;
     }
 
     state.statsMonth = currentMonthValue();
@@ -281,12 +288,27 @@ function init() {
     bindEvents();
 
     if (state.authToken) {
-        unlockAdmin("Dang xac thuc phien...");
+        unlockAdmin(getAdminLabel());
         loadDashboardStats();
         switchModule(state.moduleKey);
     } else {
         lockAdmin();
     }
+}
+
+function getAdminLabel() {
+    if (!state.currentAdmin) {
+        return "Dang nhap thanh cong";
+    }
+
+    const name = state.currentAdmin.name || "ADMIN";
+    const email = state.currentAdmin.email || "";
+    const role = state.currentAdmin.role || "ADMIN";
+
+    if (email) {
+        return `${name} (${email} - ${role})`;
+    }
+    return `${name} (${role})`;
 }
 
 function bindEvents() {
@@ -648,8 +670,9 @@ async function login() {
         state.authToken = result.token;
         state.currentAdmin = result;
         localStorage.setItem(AUTH_TOKEN_KEY, result.token);
+        localStorage.setItem(AUTH_USER_KEY, JSON.stringify(result));
 
-        unlockAdmin(`${result.name || result.email} (${result.role || "ADMIN"})`);
+        unlockAdmin(getAdminLabel());
         showToast("Dang nhap thanh cong");
         await loadDashboardStats();
         switchModule(state.moduleKey);
@@ -679,6 +702,7 @@ async function logout() {
     state.authToken = null;
     state.currentAdmin = null;
     localStorage.removeItem(AUTH_TOKEN_KEY);
+    localStorage.removeItem(AUTH_USER_KEY);
     lockAdmin();
     showToast("Da dang xuat");
 }
