@@ -209,9 +209,19 @@ const state = {
 const els = {
     appShell: document.getElementById("appShell"),
     loginOverlay: document.getElementById("loginOverlay"),
+    loginForm: document.getElementById("loginForm"),
+    registerForm: document.getElementById("registerForm"),
     loginEmail: document.getElementById("loginEmail"),
     loginPassword: document.getElementById("loginPassword"),
     loginBtn: document.getElementById("loginBtn"),
+    registerName: document.getElementById("registerName"),
+    registerEmail: document.getElementById("registerEmail"),
+    registerPassword: document.getElementById("registerPassword"),
+    registerPhone: document.getElementById("registerPhone"),
+    registerAddress: document.getElementById("registerAddress"),
+    registerBtn: document.getElementById("registerBtn"),
+    switchToRegisterBtn: document.getElementById("switchToRegisterBtn"),
+    switchToLoginBtn: document.getElementById("switchToLoginBtn"),
     logoutBtn: document.getElementById("logoutBtn"),
     sessionUser: document.getElementById("sessionUser"),
     moduleNav: document.getElementById("moduleNav"),
@@ -313,6 +323,15 @@ function getAdminLabel() {
 
 function bindEvents() {
     els.loginBtn.addEventListener("click", () => login());
+    els.registerBtn.addEventListener("click", () => register());
+    els.switchToRegisterBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        switchToRegisterForm();
+    });
+    els.switchToLoginBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        switchToLoginForm();
+    });
     els.logoutBtn.addEventListener("click", () => logout());
 
     els.refreshBtn.addEventListener("click", () => loadList());
@@ -705,6 +724,82 @@ async function logout() {
     localStorage.removeItem(AUTH_USER_KEY);
     lockAdmin();
     showToast("Da dang xuat");
+}
+
+async function register() {
+    const name = (els.registerName.value || "").trim();
+    const email = (els.registerEmail.value || "").trim();
+    const password = els.registerPassword.value || "";
+    const phone = (els.registerPhone.value || "").trim();
+    const address = (els.registerAddress.value || "").trim();
+
+    if (!name || !email || !password) {
+        showLoginPopup("Nhap day du thong tin: ho va ten, email va mat khau");
+        return;
+    }
+
+    if (password.length < 6) {
+        showLoginPopup("Mat khau phai co it nhat 6 ky tu");
+        return;
+    }
+
+    try {
+        const result = await request(resourceUrl("auth/register"), {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                name: name,
+                email: email,
+                password: password,
+                phoneNumber: phone || null,
+                address: address || null
+            })
+        }, true);
+
+        if (!result || !result.id) {
+            throw new Error("Phan hoi dang ky khong hop le");
+        }
+
+        showLoginPopup("Dang ky thanh cong! Vui long dang nhap voi tai khoan moi");
+        clearRegisterForm();
+        switchToLoginForm();
+    } catch (error) {
+        const message = error.message || "";
+        if (message.includes("da duoc dang ky")) {
+            showLoginPopup("Email nay da duoc dang ky");
+        } else {
+            showLoginPopup(message || "Dang ky that bai");
+        }
+    }
+}
+
+function switchToRegisterForm() {
+    els.loginForm.style.display = "none";
+    els.registerForm.style.display = "block";
+    document.getElementById("authTitle").textContent = "Dang ky tai khoan";
+    document.getElementById("authHint").textContent = "Tao tai khoan de truy cap he thong quan tri.";
+    clearRegisterForm();
+}
+
+function switchToLoginForm() {
+    els.registerForm.style.display = "none";
+    els.loginForm.style.display = "block";
+    document.getElementById("authTitle").textContent = "Dang nhap quan tri";
+    document.getElementById("authHint").textContent = "Chi tai khoan ADMIN moi duoc truy cap.";
+    clearLoginForm();
+}
+
+function clearLoginForm() {
+    els.loginEmail.value = "";
+    els.loginPassword.value = "";
+}
+
+function clearRegisterForm() {
+    els.registerName.value = "";
+    els.registerEmail.value = "";
+    els.registerPassword.value = "";
+    els.registerPhone.value = "";
+    els.registerAddress.value = "";
 }
 
 async function loadDashboardStats() {

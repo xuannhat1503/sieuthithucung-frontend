@@ -538,3 +538,21 @@ td.actions-cell {
         gap: 6px;
     }
 }
+
+.auth-toggle {
+    text-align: center;
+    font-size: 14px;
+    color: var(--muted);
+    margin-top: 12px;
+}
+
+.auth-toggle a {
+    color: var(--brand);
+    text-decoration: none;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.auth-toggle a:hover {
+    text-decoration: underline;
+}
