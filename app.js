@@ -115,6 +115,36 @@ const modules = {
             { key: "amount", label: "So tien", type: "number", step: "0.01" }
         ]
     },
+    coupons: {
+        title: "Ma giam gia",
+        resource: "coupons",
+        fields: [
+            { key: "code", label: "Ma coupon" },
+            {
+                key: "type",
+                label: "Loai",
+                options: [
+                    { value: "percent", label: "Giam theo %" },
+                    { value: "fixed", label: "Giam tien mat" },
+                    { value: "shipping", label: "Giam phi ship" }
+                ]
+            },
+            { key: "discount", label: "Muc giam", type: "number", step: "0.01" },
+            { key: "minSubtotal", label: "Don toi thieu", type: "number", step: "0.01" },
+            { key: "maxDiscount", label: "Giam toi da", type: "number", step: "0.01" },
+            { key: "label", label: "Mo ta hien thi", full: true },
+            { key: "expiredAt", label: "Han su dung", type: "datetime-local" },
+            {
+                key: "isActive",
+                label: "Kich hoat",
+                type: "boolean",
+                options: [
+                    { value: "true", label: "Dang bat" },
+                    { value: "false", label: "Dang tat" }
+                ]
+            }
+        ]
+    },
     reviews: {
         title: "Danh gia",
         resource: "reviews",
@@ -502,6 +532,8 @@ function startEdit(item) {
         const rawValue = item[field.key];
         if (field.type === "boolean") {
             input.value = rawValue === true ? "true" : rawValue === false ? "false" : "";
+        } else if (field.type === "datetime-local") {
+            input.value = toDateTimeLocalInputValue(rawValue);
         } else {
             input.value = rawValue ?? "";
         }
@@ -855,6 +887,11 @@ function buildPayload(fields) {
             return;
         }
 
+        if (field.type === "datetime-local") {
+            payload[field.key] = normalizeDateTimeLocalValue(raw);
+            return;
+        }
+
         payload[field.key] = raw;
     });
 
@@ -892,6 +929,36 @@ function valueToText(value) {
         return JSON.stringify(value);
     }
     return String(value);
+}
+
+function toDateTimeLocalInputValue(value) {
+    if (!value) {
+        return "";
+    }
+
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) {
+        return "";
+    }
+
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    const hours = String(date.getHours()).padStart(2, "0");
+    const minutes = String(date.getMinutes()).padStart(2, "0");
+    return `${year}-${month}-${day}T${hours}:${minutes}`;
+}
+
+function normalizeDateTimeLocalValue(value) {
+    if (!value) {
+        return value;
+    }
+
+    if (/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(value)) {
+        return `${value}:00`;
+    }
+
+    return value;
 }
 
 function toAbsoluteUrl(pathOrUrl) {
