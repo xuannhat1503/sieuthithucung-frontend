@@ -21,11 +21,7 @@
 
         <section class="psg-section psg-shell psg-catalog-layout">
             <form class="psg-filter-panel" id="catalog-filters">
-                <div class="psg-filter-box">
-                    <h2>Tìm kiếm</h2>
-                    <label class="psg-form-label" for="catalog-search">Từ khóa</label>
-                    <input id="catalog-search" class="psg-field-input" name="keyword" type="search" placeholder="VD: pate, cát vệ sinh...">
-                </div>
+                <input name="keyword" type="hidden">
 
                 <div class="psg-filter-box">
                     <h2>Danh mục</h2>
@@ -34,21 +30,39 @@
 
                 <div class="psg-filter-box">
                     <h2>Mức giá</h2>
-                    <label class="psg-form-label" for="min-price">Giá từ</label>
-                    <input id="min-price" class="psg-field-input" name="min_price" type="number" min="0" step="1000" placeholder="0">
-                    <label class="psg-form-label psg-spaced-label" for="max-price">Đến giá</label>
-                    <input id="max-price" class="psg-field-input" name="max_price" type="number" min="0" step="1000" placeholder="1000000">
-                </div>
-
-                <div class="psg-filter-box">
-                    <h2>Sắp xếp</h2>
-                    <select class="psg-field-input" name="sort">
-                        <option value="latest">Mới nhất</option>
-                        <option value="price_asc">Giá thấp đến cao</option>
-                        <option value="price_desc">Giá cao đến thấp</option>
-                        <option value="name_asc">Tên A-Z</option>
-                        <option value="rating">Đánh giá cao</option>
-                    </select>
+                    <div class="psg-price-range" data-price-range>
+                        <div class="psg-price-range-values">
+                            <span class="psg-price-range-value" data-price-min-label>0đ</span>
+                            <span class="psg-price-range-separator">-</span>
+                            <span class="psg-price-range-value" data-price-max-label>1.000.000đ</span>
+                        </div>
+                        <div class="psg-price-range-slider">
+                            <div class="psg-price-range-rail"></div>
+                            <div class="psg-price-range-progress" data-price-range-progress></div>
+                            <input
+                                id="min-price"
+                                class="psg-range-input is-min"
+                                name="min_price"
+                                type="range"
+                                min="0"
+                                max="1000000"
+                                step="10000"
+                                value="0"
+                                data-price-min
+                            >
+                            <input
+                                id="max-price"
+                                class="psg-range-input is-max"
+                                name="max_price"
+                                type="range"
+                                min="0"
+                                max="1000000"
+                                step="10000"
+                                value="1000000"
+                                data-price-max
+                            >
+                        </div>
+                    </div>
                 </div>
 
                 <button class="psg-btn psg-btn-primary" type="submit">Áp dụng bộ lọc</button>
@@ -57,7 +71,23 @@
             <div class="psg-catalog-main">
                 <div class="psg-catalog-toolbar">
                     <p data-results-summary><strong>Đang tải dữ liệu...</strong></p>
-                    <p class="psg-toolbar-hint">Dữ liệu được ưu tiên lấy từ API, có phương án dự phòng để trang không bị trống.</p>
+                    <div class="psg-catalog-toolbar-sort">
+                        <label for="catalog-sort">Sắp xếp:</label>
+                        <select
+                            id="catalog-sort"
+                            class="psg-field-input psg-toolbar-sort-select"
+                            name="sort"
+                            form="catalog-filters"
+                            data-toolbar-sort
+                        >
+                            <option value="default">Mặc định</option>
+                            <option value="latest">Mới nhất</option>
+                            <option value="price_asc">Giá thấp đến cao</option>
+                            <option value="price_desc">Giá cao đến thấp</option>
+                            <option value="name_asc">Tên A-Z</option>
+                            <option value="rating">Đánh giá cao</option>
+                        </select>
+                    </div>
                 </div>
 
                 <div class="psg-product-grid" data-product-list="catalog"></div>

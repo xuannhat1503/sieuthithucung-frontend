@@ -2,7 +2,7 @@ const shared = window.CustomerEngagementShared;
 
 document.addEventListener('DOMContentLoaded', () => {
     shared.bindLoginModal({
-        onSuccess: () => loadWishlist('Dang nhap thanh cong.'),
+        onSuccess: () => loadWishlist('Đăng nhập thành công.'),
     });
 
     shared.bindWishlistLinks();
@@ -23,7 +23,7 @@ async function loadWishlist(statusMessage = '') {
 
     if (!shared.getAuthUser()) {
         shared.setWishlistCount(0);
-        wrap.innerHTML = shared.renderLoginRequired('Vui long dang nhap truoc khi xem wishlist.');
+        wrap.innerHTML = shared.renderLoginRequired('Vui lòng đăng nhập trước khi xem wishlist.');
         shared.attachLoginPrompts();
         return;
     }
@@ -41,13 +41,13 @@ async function loadWishlist(statusMessage = '') {
         renderWishlist(payload.wishlist_items || []);
     } catch (error) {
         if (error.status === 401) {
-            wrap.innerHTML = shared.renderLoginRequired('Vui long dang nhap truoc khi xem wishlist.');
+            wrap.innerHTML = shared.renderLoginRequired('Vui lòng đăng nhập trước khi xem wishlist.');
             shared.attachLoginPrompts();
-            shared.setStatus('status', error.message || 'Ban can dang nhap.', 'error');
+            shared.setStatus('status', error.message || 'Bạn cần đăng nhập.', 'error');
             return;
         }
 
-        shared.setStatus('status', error.message || 'Khong tai duoc wishlist.', 'error');
+        shared.setStatus('status', error.message || 'Không tải được wishlist.', 'error');
     }
 }
 
@@ -60,8 +60,8 @@ function renderWishlist(items) {
     if (!Array.isArray(items) || items.length === 0) {
         wrap.innerHTML = `
             <article class="ec-empty-note">
-                <strong>Wishlist dang trong</strong>
-                <p>Tai khoan nay chua co san pham nao trong wishlist.</p>
+                <strong>Wishlist đang trống</strong>
+                <p>Tài khoản này chưa có sản phẩm nào trong wishlist.</p>
             </article>
         `;
         return;
@@ -90,7 +90,7 @@ function renderWishlist(items) {
                         <span class="ec-meta">${shared.formatDate(item.wishlisted_at)}</span>
                     </div>
                     <div style="margin-top: 18px;">
-                        <a class="ec-btn ec-btn-secondary" href="${detailHref}">Xem san pham</a>
+                        <a class="ec-btn ec-btn-secondary" href="${detailHref}">Xem sản phẩm</a>
                     </div>
                 </div>
             </article>

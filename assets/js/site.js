@@ -5,7 +5,7 @@
     const LOCAL_API_BASE = "http://127.0.0.1:8000/api";
     const DEPLOY_API_BASE = "/api";
     const LOCAL_AUTH_API_BASE = "http://127.0.0.1:8000/api/auth";
-    const DEPLOY_AUTH_API_BASE = "https://sieuthithucung-backend-production.up.railway.app/api/auth";
+    const DEPLOY_AUTH_API_BASE = "/api/auth";  // Use Vercel proxy
     let sharedAssetsPromise = null;
     const assetPromiseCache = new Map();
 
@@ -187,6 +187,10 @@
                 item.classList.add("active");
             }
         });
+
+        root.querySelectorAll("[data-psg-category-nav]").forEach((item) => {
+            item.classList.toggle("active", activeNavKey === "products");
+        });
     }
 
     function applyEngagementNavigation(scope) {
@@ -202,8 +206,7 @@
             wishlistLink.setAttribute("href", wishlistUrl);
         }
 
-        const navItems = root.querySelectorAll(".psg-nav-items > .psg-nav-item");
-        const blogItem = navItems[4];
+        const blogItem = root.querySelector('[data-psg-menu="blog"]');
         if (blogItem) {
             const blogLink = blogItem.querySelector(":scope > a");
             if (blogLink) {
@@ -221,7 +224,7 @@
             });
         }
 
-        const contactItem = navItems[5];
+        const contactItem = root.querySelector('[data-psg-menu="contact"]');
         if (contactItem) {
             const contactLink = contactItem.querySelector("a");
             if (contactLink) {

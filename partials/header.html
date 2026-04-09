@@ -82,38 +82,28 @@
     <div class="psg-navigation">
         <div class="container">
             <div class="psg-nav-inner">
-                <div class="psg-category-btn">
+                <div class="psg-category-btn psg-dropdown" data-psg-category-nav="products">
                     <i class="fa fa-bars"></i>
                     <span>DANH MỤC SẢN PHẨM</span>
-                </div>
-
-                <nav class="psg-main-nav">
-                    <ul class="psg-nav-items">
-                        <li class="psg-nav-item">
-                            <a data-psg-page="pages/home.html" data-psg-nav="home" href="./pages/home.html">TRANG
-                                CHỦ</a>
-                        </li>
-                        <li class="psg-nav-item psg-dropdown">
-                            <a data-psg-href="pages/products.html?category=thuc-an-cho-cho" data-psg-nav="products"
-                                href="./pages/products.html?category=thuc-an-cho-cho">SHOP CHÓ <i
-                                    class="fa fa-chevron-down"></i></a>
+                    <i class="fa fa-chevron-down"></i>
+                    <ul class="psg-submenu psg-category-menu">
+                        <li class="psg-category-group">
+                            <a data-psg-href="pages/products.html?category=thuc-an-cho-cho"
+                                href="./pages/products.html?category=thuc-an-cho-cho">SHOP CHÓ <i class="fa fa-chevron-right"></i></a>
                             <ul class="psg-submenu">
                                 <li><a data-psg-href="pages/products.html?category=thuc-an-cho-cho"
                                         href="./pages/products.html?category=thuc-an-cho-cho">Thức ăn cho chó</a></li>
                                 <li><a data-psg-href="pages/products.html?category=thuc-an-cho-cho&sort=latest"
-                                        href="./pages/products.html?category=thuc-an-cho-cho&sort=latest">Sản phẩm mới
-                                        cho chó</a></li>
+                                        href="./pages/products.html?category=thuc-an-cho-cho&sort=latest">Sản phẩm mới cho chó</a></li>
                                 <li><a data-psg-href="pages/products.html?category=thuc-an-cho-cho&sort=price_asc"
-                                        href="./pages/products.html?category=thuc-an-cho-cho&sort=price_asc">Giá tốt cho
-                                        chó</a></li>
+                                        href="./pages/products.html?category=thuc-an-cho-cho&sort=price_asc">Giá tốt cho chó</a></li>
                                 <li><a data-psg-href="pages/products.html?keyword=snack"
                                         href="./pages/products.html?keyword=snack">Snack thưởng cho chó</a></li>
                             </ul>
                         </li>
-                        <li class="psg-nav-item psg-dropdown">
-                            <a data-psg-href="pages/products.html?category=thuc-an-cho-meo" data-psg-nav="products"
-                                href="./pages/products.html?category=thuc-an-cho-meo">SHOP MÈO <i
-                                    class="fa fa-chevron-down"></i></a>
+                        <li class="psg-category-group">
+                            <a data-psg-href="pages/products.html?category=thuc-an-cho-meo"
+                                href="./pages/products.html?category=thuc-an-cho-meo">SHOP MÈO <i class="fa fa-chevron-right"></i></a>
                             <ul class="psg-submenu">
                                 <li><a data-psg-href="pages/products.html?category=thuc-an-cho-meo"
                                         href="./pages/products.html?category=thuc-an-cho-meo">Thức ăn cho mèo</a></li>
@@ -125,22 +115,28 @@
                                         href="./pages/products.html?category=ve-sinh">Cát vệ sinh</a></li>
                             </ul>
                         </li>
-                        <li class="psg-nav-item psg-dropdown">
-                            <a data-psg-href="pages/products.html?category=phu-kien" data-psg-nav="products"
-                                href="./pages/products.html?category=phu-kien">PHỤ KIỆN <i
-                                    class="fa fa-chevron-down"></i></a>
+                        <li class="psg-category-group">
+                            <a data-psg-href="pages/products.html?category=phu-kien"
+                                href="./pages/products.html?category=phu-kien">PHỤ KIỆN <i class="fa fa-chevron-right"></i></a>
                             <ul class="psg-submenu">
                                 <li><a data-psg-href="pages/products.html?category=phu-kien"
                                         href="./pages/products.html?category=phu-kien">Vòng cổ và dây dắt</a></li>
                                 <li><a data-psg-href="pages/products.html?category=phu-kien&sort=latest"
-                                        href="./pages/products.html?category=phu-kien&sort=latest">Phụ kiện mới về</a>
-                                </li>
+                                        href="./pages/products.html?category=phu-kien&sort=latest">Phụ kiện mới về</a></li>
                                 <li><a data-psg-href="pages/products.html?category=phu-kien&sort=price_desc"
-                                        href="./pages/products.html?category=phu-kien&sort=price_desc">Dòng cao cấp</a>
-                                </li>
+                                        href="./pages/products.html?category=phu-kien&sort=price_desc">Dòng cao cấp</a></li>
                             </ul>
                         </li>
-                        <li class="psg-nav-item psg-dropdown">
+                    </ul>
+                </div>
+
+                <nav class="psg-main-nav">
+                    <ul class="psg-nav-items">
+                        <li class="psg-nav-item">
+                            <a data-psg-page="pages/home.html" data-psg-nav="home" href="./pages/home.html">TRANG
+                                CHỦ</a>
+                        </li>
+                        <li class="psg-nav-item psg-dropdown" data-psg-menu="blog">
                             <a href="#">BLOG CHIA SẺ <i class="fa fa-chevron-down"></i></a>
                             <ul class="psg-submenu">
                                 <li><a href="#">Blog chó</a></li>
@@ -148,7 +144,7 @@
                                 <li><a href="#">Tips chăm sóc</a></li>
                             </ul>
                         </li>
-                        <li class="psg-nav-item">
+                        <li class="psg-nav-item" data-psg-menu="contact">
                             <a data-psg-href="pages/home.html#psg-footer" href="./pages/home.html#psg-footer">LIÊN
                                 HỆ</a>
                         </li>

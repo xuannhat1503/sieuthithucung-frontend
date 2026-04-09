@@ -3,33 +3,33 @@ const shared = window.CustomerEngagementShared;
 const CATEGORY_CONFIG = {
     all: {
         chip: 'Blog PETSAIGON',
-        title: 'Blog chia se cho nguoi nuoi thu cung',
-        copy: 'Tong hop bai viet huu ich ve cham soc, dinh duong va kinh nghiem mua sam cho boss.',
-        section: 'Bai viet huu ich',
+        title: 'Blog chia sẻ cho người nuôi thú cưng',
+        copy: 'Tổng hợp bài viết hữu ích về chăm sóc, dinh dưỡng và kinh nghiệm mua sắm cho boss.',
+        section: 'Bài viết hữu ích',
     },
     dog: {
-        chip: 'Blog cho',
-        title: 'Blog danh cho nguoi nuoi cho',
-        copy: 'Tong hop bai viet ve cham soc, huan luyen va kinh nghiem chon san pham cho cac be cho.',
-        section: 'Bai viet ve cho',
+        chip: 'Blog chó',
+        title: 'Blog dành cho người nuôi chó',
+        copy: 'Tổng hợp bài viết về chăm sóc, huấn luyện và kinh nghiệm chọn sản phẩm cho các bé chó.',
+        section: 'Bài viết về chó',
     },
     cat: {
-        chip: 'Blog meo',
-        title: 'Blog danh cho nguoi nuoi meo',
-        copy: 'Cap nhat meo hay ve dinh duong, suc khoe va thoi quen sinh hoat cua cac be meo.',
-        section: 'Bai viet ve meo',
+        chip: 'Blog mèo',
+        title: 'Blog dành cho người nuôi mèo',
+        copy: 'Cập nhật mẹo hay về dinh dưỡng, sức khỏe và thói quen sinh hoạt của các bé mèo.',
+        section: 'Bài viết về mèo',
     },
     tips: {
-        chip: 'Tips cham soc',
-        title: 'Tips cham soc thu cung',
-        copy: 'Meo nhanh ve cham soc, mua sam va theo doi suc khoe de nuoi boss nhe nhang hon.',
-        section: 'Muc tips noi bat',
+        chip: 'Tips chăm sóc',
+        title: 'Tips chăm sóc thú cưng',
+        copy: 'Mẹo nhanh về chăm sóc, mua sắm và theo dõi sức khỏe để nuôi boss nhẹ nhàng hơn.',
+        section: 'Mục tips nổi bật',
     },
 };
 
 document.addEventListener('DOMContentLoaded', () => {
     shared.bindLoginModal({
-        onSuccess: () => loadPage('Dang nhap thanh cong.'),
+        onSuccess: () => loadPage('Đăng nhập thành công.'),
     });
 
     shared.bindWishlistLinks();
@@ -64,7 +64,7 @@ async function loadPage(statusMessage = '') {
         renderBlogPosts(posts, categoryKey, payload.blog_message || '');
         shared.attachLoginPrompts();
     } catch (error) {
-        shared.setStatus('status', error.message || 'Khong tai duoc danh sach bai viet.', 'error');
+        shared.setStatus('status', error.message || 'Không tải được danh sách bài viết.', 'error');
     }
 }
 
@@ -126,7 +126,7 @@ function updateHeading(categoryKey, count) {
     if (copy) {
         copy.textContent = count > 0
             ? config.copy
-            : `${config.copy} Hien tai chua co bai viet phu hop trong muc nay.`;
+            : `${config.copy} Hiện tại chưa có bài viết phù hợp trong mục này.`;
     }
 
     if (sectionTitle) {
@@ -142,13 +142,13 @@ function renderBlogPosts(posts, categoryKey, message) {
 
     if (!Array.isArray(posts) || posts.length === 0) {
         const emptyText = categoryKey === 'all'
-            ? (message || 'Chua co bai viet nao de hien thi.')
-            : 'Chua co bai viet nao trong chuyen muc nay.';
+            ? (message || 'Chưa có bài viết nào để hiển thị.')
+            : 'Chưa có bài viết nào trong chuyên mục này.';
 
         wrap.innerHTML = `
             <article class="ec-blog-card accent-sky">
                 <span class="ec-blog-tag">Blog</span>
-                <h3>Chua co bai viet</h3>
+                <h3>Chưa có bài viết</h3>
                 <p>${shared.escapeHtml(emptyText)}</p>
             </article>
         `;
@@ -167,8 +167,8 @@ function renderBlogPosts(posts, categoryKey, message) {
                     <h3>${shared.escapeHtml(post.title)}</h3>
                     <p>${shared.escapeHtml(post.summary || '')}</p>
                     <div class="ec-blog-footer">
-                        <span>${shared.escapeHtml(post.read_time || 'Bai viet')}</span>
-                        <span class="ec-blog-cta">Doc tiep</span>
+                        <span>${shared.escapeHtml(post.read_time || 'Bài viết')}</span>
+                        <span class="ec-blog-cta">Đọc tiếp</span>
                     </div>
                 </a>
             </article>

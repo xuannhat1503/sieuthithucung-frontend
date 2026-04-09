@@ -150,10 +150,15 @@
                 const slug = increaseButton.getAttribute("data-cart-increase");
                 const item = window.PSGCart.readCart().find((entry) => entry.slug === slug);
                 if (item) {
-                    await window.PSGCart.updateQuantity(slug, Number(item.quantity || 1) + 1);
+                    if (Number(item.quantity) >= Number(item.stock || 999999)) {
+                        window.toastr && window.toastr.warning("Đã vượt quá số lượng tồn kho!");
+                        return;
+                    }
+                    window.PSGCart.updateQuantity(slug, Number(item.quantity || 1) + 1);
                 }
                 return;
             }
+
 
             if (decreaseButton) {
                 const slug = decreaseButton.getAttribute("data-cart-decrease");
@@ -163,14 +168,16 @@
                 }
 
                 if (Number(item.quantity || 1) <= 1) {
-                    await window.PSGCart.removeItem(slug);
+                    window.PSGCart.removeItem(slug);
                 } else {
-                    await window.PSGCart.updateQuantity(slug, Number(item.quantity || 1) - 1);
+                    window.PSGCart.updateQuantity(slug, Number(item.quantity || 1) - 1);
                 }
                 return;
             }
 
             if (removeButton) {
+                removeButton.disabled = true;
+                removeButton.textContent = "Đang xóa...";
                 await window.PSGCart.removeItem(removeButton.getAttribute("data-cart-remove"));
                 return;
             }
@@ -186,11 +193,18 @@
     });
 
     document.addEventListener("DOMContentLoaded", async () => {
-        if (!document.querySelector("[data-cart-page]") || !window.PSGCart) {
+        if (!document.querySelector("[data-cart-page]")) {
             return;
         }
 
-        await window.PSGCart.ready;
+        if (window.PSGSite && window.PSGSite.ensureSharedAssets) {
+            await window.PSGSite.ensureSharedAssets();
+        }
+
+        if (window.PSGCart && window.PSGCart.ready) {
+            await window.PSGCart.ready;
+        }
+        
         renderPage();
     });
 

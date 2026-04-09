@@ -39,7 +39,7 @@ async function loadPost() {
             return;
         }
 
-        shared.setStatus('status', error.message || 'Khong tai duoc bai viet.', 'error');
+        shared.setStatus('status', error.message || 'Không tải được bài viết.', 'error');
         renderNotFound();
     }
 }
@@ -66,9 +66,9 @@ function renderPost(post) {
     wrap.innerHTML = `
         <div class="ec-blog-detail-head">
             <span class="ec-blog-tag">${shared.escapeHtml(post.category || 'Blog PETSAIGON')}</span>
-            <h1>${shared.escapeHtml(post.title || 'Chi tiet bai viet')}</h1>
+            <h1>${shared.escapeHtml(post.title || 'Chi tiết bài viết')}</h1>
             <div class="ec-blog-meta">
-                <span>${shared.escapeHtml(post.read_time || 'Bai viet')}</span>
+                <span>${shared.escapeHtml(post.read_time || 'Bài viết')}</span>
                 <span>${shared.formatDate(post.published_at)}</span>
             </div>
             <p class="ec-blog-summary">${shared.escapeHtml(post.summary || '')}</p>
@@ -103,8 +103,8 @@ function renderRecentPosts(posts) {
                     <h3>${shared.escapeHtml(post.title)}</h3>
                     <p>${shared.escapeHtml(post.summary || '')}</p>
                     <div class="ec-blog-footer">
-                        <span>${shared.escapeHtml(post.read_time || 'Bai viet')}</span>
-                        <span class="ec-blog-cta">Doc tiep</span>
+                        <span>${shared.escapeHtml(post.read_time || 'Bài viết')}</span>
+                        <span class="ec-blog-cta">Đọc tiếp</span>
                     </div>
                 </a>
             </article>
@@ -121,10 +121,10 @@ function renderNotFound() {
     wrap.innerHTML = `
         <div class="ec-login-card">
             <span class="ec-kicker">Blog</span>
-            <h3>Khong tim thay bai viet</h3>
-            <p>Bai viet co the da bi xoa hoac duong dan khong dung.</p>
+            <h3>Không tìm thấy bài viết</h3>
+            <p>Bài viết có thể đã bị xóa hoặc đường dẫn không đúng.</p>
             <div>
-                <a class="ec-btn ec-btn-primary" href="./customer-engagement.html">Ve danh sach blog</a>
+                <a class="ec-btn ec-btn-primary" href="./customer-engagement.html">Về danh sách blog</a>
             </div>
         </div>
     `;

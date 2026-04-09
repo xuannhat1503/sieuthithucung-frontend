@@ -365,8 +365,9 @@
             const payload = await window.PSGCart.requestJson("/calculate-shipping", {
                 method: "POST",
                 body: {
-                    email: authUser.email,
-                    shipping_address_id: Number(selectedAddress.id),
+                    
+                    district_id: Number(selectedAddress.district_code), 
+                    ward_code: String(selectedAddress.ward_code)      
                 },
             });
 

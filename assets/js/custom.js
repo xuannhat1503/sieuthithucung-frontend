@@ -494,8 +494,15 @@ $(document).ready(function () {
             });
         }
 
-        async function fetchLocationJson(url) {
-            const response = await fetch(url);
+        async function fetchLocationJson(url, options = {}) {
+            const response = await fetch(url, {
+                ...options,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Token': '50b713f0-302d-11f1-a5fa-7ec58214c74b',
+                    ...(options.headers || {})
+                }
+            });
             if (!response.ok) {
                 throw new Error(`Khong the tai du lieu dia gioi (${response.status}).`);
             }
@@ -508,8 +515,12 @@ $(document).ready(function () {
                 return accountLocationCache.provinces;
             }
 
-            const data = await fetchLocationJson('https://provinces.open-api.vn/api/p/');
-            accountLocationCache.provinces = Array.isArray(data) ? data : [];
+           const payload = await fetchLocationJson('https://online-gateway.ghn.vn/shiip/public-api/master-data/province', { method: 'POST' });
+            const data = payload && payload.data ? payload.data : [];
+            accountLocationCache.provinces = data.map(p => ({
+                code: p.ProvinceID,
+                name: p.ProvinceName
+            }));
             return accountLocationCache.provinces;
         }
 
@@ -522,9 +533,19 @@ $(document).ready(function () {
                 return accountLocationCache.provinceDetails.get(provinceCode);
             }
 
-            const data = await fetchLocationJson(`https://provinces.open-api.vn/api/p/${provinceCode}?depth=2`);
-            accountLocationCache.provinceDetails.set(provinceCode, data);
-            return data;
+            const payload = await fetchLocationJson(`https://online-gateway.ghn.vn/shiip/public-api/master-data/district`, {
+                method: 'POST',
+                body: JSON.stringify({ province_id: Number(provinceCode) })
+            });
+            const data = payload && payload.data ? payload.data : [];
+            const formattedData = {
+                 districts: data.map(d => ({
+                     code: d.DistrictID,
+                     name: d.DistrictName
+                 }))
+            };
+            accountLocationCache.provinceDetails.set(provinceCode, formattedData);
+            return formattedData;
         }
 
         async function getDistrictDetails(districtCode) {
@@ -536,9 +557,19 @@ $(document).ready(function () {
                 return accountLocationCache.districtDetails.get(districtCode);
             }
 
-            const data = await fetchLocationJson(`https://provinces.open-api.vn/api/d/${districtCode}?depth=2`);
-            accountLocationCache.districtDetails.set(districtCode, data);
-            return data;
+            const payload = await fetchLocationJson(`https://online-gateway.ghn.vn/shiip/public-api/master-data/ward`, {
+                method: 'POST',
+                body: JSON.stringify({ district_id: Number(districtCode) })
+            });
+            const data = payload && payload.data ? payload.data : [];
+            const formattedData = {
+                 wards: data.map(w => ({
+                     code: w.WardCode,
+                     name: w.WardName
+                 }))
+            };
+            accountLocationCache.districtDetails.set(districtCode, formattedData);
+            return formattedData;
         }
 
         function sortLocationItems(items) {

@@ -154,6 +154,31 @@
         window.alert(message);
     }
 
+    function normalizeQuantityValue(quantity) {
+        return Math.max(1, Math.floor(Number(quantity || 1) || 1));
+    }
+
+    function resolveStockLimit(...values) {
+        for (const value of values) {
+            const normalized = Math.floor(Number(value));
+            if (Number.isFinite(normalized) && normalized > 0) {
+                return normalized;
+            }
+        }
+
+        return Number.POSITIVE_INFINITY;
+    }
+
+    function assertAvailableQuantity(quantity, stockLimit) {
+        const normalizedQuantity = normalizeQuantityValue(quantity);
+
+        if (Number.isFinite(stockLimit) && normalizedQuantity > stockLimit) {
+            throw new Error(`Chi con ${stockLimit} san pham trong kho.`);
+        }
+
+        return normalizedQuantity;
+    }
+
     function normalizeProduct(product) {
         if (!product) {
             return null;
@@ -164,7 +189,7 @@
             slug: String(product.slug || product.product?.slug || "").trim(),
             name: String(product.name || product.product?.name || "").trim(),
             price: Number(product.price ?? product.product?.price ?? 0),
-            quantity: Math.max(1, Number(product.quantity || 1)),
+            quantity: normalizeQuantityValue(product.quantity),
             primary_image: String(product.primary_image || product.product?.primary_image || "").trim(),
             category: String(product.category || product.product?.category?.slug || "").trim(),
             categoryLabel: String(product.categoryLabel || product.product?.category?.name || "").trim(),
@@ -198,7 +223,10 @@
 
     function readLocalCart() {
         try {
-            const raw = window.localStorage.getItem(CART_KEY);
+            let raw = window.localStorage.getItem(CART_KEY);
+            if (!raw && getAuthUser()) {
+                raw = window.localStorage.getItem("psg-cart-server-cache");
+            }
             const parsed = raw ? JSON.parse(raw) : [];
             return Array.isArray(parsed)
                 ? parsed.map(normalizeProduct).filter(Boolean)
@@ -209,7 +237,11 @@
     }
 
     function writeLocalCart(cart) {
-        window.localStorage.setItem(CART_KEY, JSON.stringify(cart));
+        if (getAuthUser()) {
+            window.localStorage.setItem("psg-cart-server-cache", JSON.stringify(cart));
+        } else {
+            window.localStorage.setItem(CART_KEY, JSON.stringify(cart));
+        }
     }
 
     function readCart() {
@@ -298,7 +330,11 @@
 
     async function mergeLocalCartToServer() {
         const authUser = getAuthUser();
-        const localCart = readLocalCart();
+        let localCart = [];
+        try {
+            const raw = window.localStorage.getItem(CART_KEY);
+            if (raw) localCart = JSON.parse(raw);
+        } catch(e) {}
 
         if (!authUser || !localCart.length) {
             return;
@@ -324,6 +360,8 @@
 
             await parseResponse(response);
         }
+
+        window.localStorage.removeItem(CART_KEY);
     }
 
     async function init(force = false) {
@@ -385,6 +423,14 @@
             return readCart();
         }
 
+        const currentCart = readCart();
+        const existingItem = currentCart.find((item) => String(item.id) === String(normalized.id) || String(item.slug) === String(normalized.slug));
+        const stockLimit = resolveStockLimit(normalized.stock, existingItem?.stock);
+        const nextQuantity = assertAvailableQuantity(
+            Number(existingItem?.quantity || 0) + Number(normalized.quantity || 1),
+            stockLimit
+        );
+
         const authUser = getAuthUser();
         if (authUser && normalized.id) {
             return mutateServerCart("/cart/items", {
@@ -402,58 +448,105 @@
         }
 
         const localCart = readLocalCart();
-        const existingItem = localCart.find((item) => String(item.id) === String(normalized.id) || String(item.slug) === String(normalized.slug));
+        const localExistingItem = localCart.find((item) => String(item.id) === String(normalized.id) || String(item.slug) === String(normalized.slug));
 
-        if (existingItem) {
-            existingItem.quantity += normalized.quantity;
+        if (localExistingItem) {
+            localExistingItem.quantity = nextQuantity;
         } else {
             localCart.push(normalized);
+        }
+
+        if (authUser) {
+            window.localStorage.setItem("psg-cart-server-cache", JSON.stringify(localCart));
+        } else {
+            window.localStorage.setItem(CART_KEY, JSON.stringify(localCart));
         }
 
         setCartState(localCart);
         return readCart();
     }
 
+    let quantityUpdateTimeout = null;
+    const pendingUpdates = {};
+
     async function updateQuantity(identifier, quantity) {
         const authUser = getAuthUser();
-        const item = readCart().find((entry) => String(entry.slug) === String(identifier) || String(entry.id) === String(identifier));
+        const cart = readCart();
+        const itemIndex = cart.findIndex((entry) => String(entry.slug) === String(identifier) || String(entry.id) === String(identifier));
 
-        if (authUser && item?.id) {
-            return mutateServerCart(`/cart/items/${item.id}`, {
-                method: "PATCH",
-                headers: {
-                    Accept: "application/json",
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    email: authUser.email,
-                    quantity: Math.max(1, Number(quantity || 1)),
-                }),
+        if (itemIndex < 0) return cart;
+
+        const targetQuantity = assertAvailableQuantity(quantity, resolveStockLimit(cart[itemIndex]?.stock));
+        cart[itemIndex].quantity = targetQuantity;
+        setCartState(cart);
+
+        if (authUser && cart[itemIndex]?.id) {
+            if (pendingUpdates[cart[itemIndex].id]) {
+                clearTimeout(pendingUpdates[cart[itemIndex].id]);
+            }
+            
+            return new Promise((resolve, reject) => {
+                pendingUpdates[cart[itemIndex].id] = setTimeout(async () => {
+                    try {
+                        const response = await apiFetch(`/cart/items/${cart[itemIndex].id}`, {
+                            method: "PATCH",
+                            headers: {
+                                Accept: "application/json",
+                                "Content-Type": "application/json",
+                            },
+                            body: JSON.stringify({
+                                email: authUser.email,
+                                quantity: targetQuantity,
+                            }),
+                        });
+                        const payload = await parseResponse(response);
+                        setCartState(normalizeServerCart(payload.cart));
+                        resolve(payload.cart);
+                    } catch (error) {
+                        if (window.toastr) window.toastr.error(error.message || "Khong the cap nhat");
+                        syncFromServer().catch(console.error);
+                        reject(error);
+                    }
+                }, 300);
             });
         }
 
-        return updateLocalQuantity(identifier, quantity);
+        return updateLocalQuantity(identifier, targetQuantity);
     }
 
     async function removeItem(identifier) {
         const authUser = getAuthUser();
-        const item = readCart().find((entry) => String(entry.slug) === String(identifier) || String(entry.id) === String(identifier));
+        const cart = readCart();
+        const itemIndex = cart.findIndex((entry) => String(entry.slug) === String(identifier) || String(entry.id) === String(identifier));
 
-        if (authUser && item?.id) {
-            return mutateServerCart(`/cart/items/${item.id}`, {
-                method: "DELETE",
-                headers: {
-                    Accept: "application/json",
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    email: authUser.email,
-                }),
-            });
+        if (itemIndex < 0) return cart;
+        
+        const itemId = cart[itemIndex].id;
+        cart.splice(itemIndex, 1);
+        setCartState(cart);
+
+        if (authUser && itemId) {
+            try {
+                const response = await apiFetch(`/cart/items/${itemId}`, {
+                    method: "DELETE",
+                    headers: {
+                        Accept: "application/json",
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        email: authUser.email,
+                    }),
+                });
+                const payload = await parseResponse(response);
+                setCartState(normalizeServerCart(payload.cart));
+                return payload.cart;
+            } catch (error) {
+                if (window.toastr) window.toastr.error(error.message || "Khong the xoa");
+                syncFromServer().catch(console.error);
+                return [];
+            }
         }
 
-        const nextCart = readLocalCart().filter((entry) => String(entry.slug) !== String(identifier) && String(entry.id) !== String(identifier));
-        setCartState(nextCart);
         return readCart();
     }
 
@@ -514,9 +607,18 @@
         return Math.round(subtotalAfterDiscount * Number(taxRate || 0));
     }
 
+    function getCouponDefinitions() {
+        return {
+            PET10: { code: "PET10", type: "percent", value: 10, minSubtotal: 200000, maxDiscount: 50000, label: "Giam 10% toi da 50.000d cho don tu 200.000d" },
+            SAVE30K: { code: "SAVE30K", type: "fixed", value: 30000, minSubtotal: 300000, label: "Giam truc tiep 30.000d cho don tu 300.000d" },
+            FREESHIP: { code: "FREESHIP", type: "shipping", value: 30000, minSubtotal: 150000, label: "Mien phi van chuyen toi da 30.000d" },
+            THUANNGU: { code: "THUANNGU", type: "percent", value: 100, minSubtotal: 0, label: "Noi hay lam giam cho 100% nhe" },
+        };
+    }
+
     function getCouponState(code, cart = readCart(), shippingFeeOverride = null) {
         const normalized = String(code || "").trim().toUpperCase();
-        const coupon = null;
+        const coupon = getCouponDefinitions()[normalized] || null;
         const subtotal = cart.reduce((sum, item) => sum + (Number(item.price || 0) * Number(item.quantity || 1)), 0);
         const shippingFee = shippingFeeOverride === null || shippingFeeOverride === undefined
             ? getShippingFee(subtotal)
